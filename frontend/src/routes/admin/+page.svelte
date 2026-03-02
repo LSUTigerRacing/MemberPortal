@@ -3,7 +3,7 @@
     import ListView from "$lib/components/pages/admin/ListView.svelte";
     import SearchBar from "$lib/components/pages/admin/SearchBar.svelte";
 
-    import { ViewMode, SortOrder, type AdminProps } from "$lib/components/pages/admin/types";
+    import { ViewMode, SortOrder, type AdminProps } from "$lib/components/pages/admin/helpers";
 
     let viewMode = $state<ViewMode>(ViewMode.List);
     let sortOrder = $state<SortOrder>(SortOrder.Ascending);

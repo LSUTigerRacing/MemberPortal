@@ -8,7 +8,6 @@
         TabsTrigger
     } from "$lib/components/ui/tabs";
 
-    import Filter from "$lib/components/pages/projects/kanban/Filter.svelte";
     import MyTasks from "$lib/components/pages/projects/kanban/MyTasks.svelte";
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
     import { KanbanTabs } from "$lib/components/pages/projects/kanban/helpers";
@@ -28,12 +27,10 @@
             {/each}
         </TabsList>
         <TabsContent value={KanbanTabs.Overview}>
-            <Filter {data} />
-            <KanbanBoard />
+            <KanbanBoard {data} />
         </TabsContent>
         <TabsContent value={KanbanTabs.MyTasks}>
-            <Filter {data} />
-            <MyTasks />
+            <MyTasks {data} />
         </TabsContent>
     </Tabs>
 </div>

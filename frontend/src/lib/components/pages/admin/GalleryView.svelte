@@ -31,7 +31,7 @@
     import { Separator } from "$lib/components/ui/separator";
 
     import UserDropdown from "./UserDropdown.svelte";
-    import { ViewMode, type AdminProps } from "./types";
+    import { ViewMode, type AdminProps } from "./helpers";
 
     let {
         viewMode = $bindable(),

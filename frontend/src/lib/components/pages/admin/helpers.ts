@@ -1,6 +1,6 @@
 import type { API } from "$lib/modules/API";
 
-import { Subsystem, System } from "../../../../../../shared/config/enums";
+import { Subsystem, System } from "../../../../../../shared/config/enums.js";
 import type { Unpacked } from "$lib/utils";
 
 export enum ViewMode {
