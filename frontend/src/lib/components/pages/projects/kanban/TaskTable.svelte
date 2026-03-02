@@ -24,10 +24,10 @@
         </TableRow>
     </TableHeader>
     <TableBody>
-        {#each tasks as task (task.id)}
+        {#each tasks as task, i (task.id)}
             <TableRow>
                 <TableCell>
-                    
+                    {i}
                 </TableCell>
             </TableRow>
         {/each}

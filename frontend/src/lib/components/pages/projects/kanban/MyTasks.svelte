@@ -7,16 +7,19 @@
         TableHeader,
         TableRow
     } from "$lib/components/ui/table";
+
+    import Filter from "./Filter.svelte";
+    import ViewButton from "./ViewButton.svelte";
+
+    const { data } = $props();
 </script>
 
-<Table>
-    <TableHeader>
-        <TableRow>
-            <TableHead>#</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Priority</TableHead>
-            <TableHead>Label</TableHead>
-            <TableHead>Due Date</TableHead>
-        </TableRow>
-    </TableHeader>
-</Table>
+<div class="flex">
+    <div></div>
+    <div class="grow">
+        <div class="flex gap-3">
+            <Filter {data} />
+            <ViewButton />
+        </div>
+    </div>
+</div>

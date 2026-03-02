@@ -4,7 +4,7 @@
     import { Field, FieldGroup, FieldLabel } from "$lib/components/ui/field";
     import { Separator } from "$lib/components/ui/separator";
 
-    import { SortOrder, type AdminProps } from "./types";
+    import { SortOrder, type AdminProps } from "./helpers";
 
     import { config } from "../../../../../../shared/config/config";
     import { System } from "../../../../../../shared/config/enums";
