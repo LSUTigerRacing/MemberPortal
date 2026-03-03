@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { Badge } from "$lib/components/ui/badge";
     import {
         Table,
         TableBody,
@@ -26,8 +27,16 @@
     <TableBody>
         {#each tasks as task, i (task.id)}
             <TableRow>
+                <TableCell>{i}</TableCell>
+                <TableCell>{task.title}</TableCell>
+                <TableCell>{false}</TableCell>
                 <TableCell>
-                    {i}
+                    <Badge class="bg-accent text-black">{task.status}</Badge>
+                </TableCell>
+                <TableCell>
+                    {#if task.deadline}
+                        {new Date(task.deadline).toLocaleString()}
+                    {/if}
                 </TableCell>
             </TableRow>
         {/each}
