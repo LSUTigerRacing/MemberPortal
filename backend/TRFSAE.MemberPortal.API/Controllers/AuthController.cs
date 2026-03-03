@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
 
             await _authService.SyncUserToDatabase(session.AccessToken);
 
-            return Redirect("http://localhost:3000/dashboard");        
+            return Redirect("http://localhost:3000");        
         }
         catch (Exception ex)
         {
@@ -118,6 +118,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "Successfully logged out." });
     }
 
+// AI-Given test url- delete later
     [HttpGet("test-auth")]
     public IActionResult TestAuth()
     {
