@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<ITaskService, TaskService>();
     builder.Services.AddScoped<IProjectService, ProjectService>();
     builder.Services.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
 }
 
 // register Supabase client as scoped for reuse across project
@@ -71,7 +72,7 @@ builder.Services.AddControllers();
 // CORS stuff
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("AllowSvelteApp", policy =>
     {
         policy.WithOrigins("http://localhost:3000")
               .AllowAnyHeader()
@@ -82,7 +83,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowReactApp");
+app.UseCors("AllowSvelteApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

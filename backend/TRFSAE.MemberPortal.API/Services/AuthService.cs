@@ -27,7 +27,6 @@ public class AuthService: IAuthService
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
-            // Basic validation: check if token is not expired
             return jwtToken.ValidTo > DateTime.UtcNow;
         }
         catch
