@@ -20,7 +20,7 @@
 
     import { ViewMode } from "./helpers";
 
-    const { viewMode }: { viewMode: ViewMode } = $props();
+    let { viewMode = $bindable() }: { viewMode: ViewMode } = $props();
 </script>
 
 <Popover>
@@ -33,20 +33,22 @@
         {/snippet}
     </PopoverTrigger>
     <PopoverContent align="end" class="w-auto">
-        <TabsList>
-            <TabsTrigger value={ViewMode.Table}>
-                <Table2 />
-                Table
-            </TabsTrigger>
-            <TabsTrigger value={ViewMode.Board}>
-                <SquareKanban />
-                Board
-            </TabsTrigger>
-            <TabsTrigger value={ViewMode.Roadmap}>
-                <SquareChartGantt />
-                Roadmap
-            </TabsTrigger>
-        </TabsList>
+        <Tabs bind:value={viewMode}>
+            <TabsList>
+                <TabsTrigger value={ViewMode.Table}>
+                    <Table2 />
+                    Table
+                </TabsTrigger>
+                <TabsTrigger value={ViewMode.Board}>
+                    <SquareKanban />
+                    Board
+                </TabsTrigger>
+                <TabsTrigger value={ViewMode.Roadmap}>
+                    <SquareChartGantt />
+                    Roadmap
+                </TabsTrigger>
+            </TabsList>
+        </Tabs>
 
         <!-- <DropdownMenuItem>
         </DropdownMenuItem>

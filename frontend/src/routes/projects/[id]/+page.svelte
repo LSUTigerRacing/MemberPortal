@@ -10,11 +10,12 @@
 
     import MyTasks from "$lib/components/pages/projects/kanban/MyTasks.svelte";
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
-    import { KanbanTabs } from "$lib/components/pages/projects/kanban/helpers";
+    import { ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
 
     const data = $state({
         title: "MP - General",
-        tab: KanbanTabs.MyTasks,
+        tab: ProjectTabs.MyTasks,
+        viewMode: ViewMode.Table,
         filter: ""
     });
 </script>
@@ -22,14 +23,14 @@
     <h1 class="text-2xl">{data.title}</h1>
     <Tabs value={data.tab}>
         <TabsList>
-            {#each Object.values(KanbanTabs) as value, i (i)}
+            {#each Object.values(ProjectTabs) as value, i (i)}
                 <TabsTrigger value={value}>{value}</TabsTrigger>
             {/each}
         </TabsList>
-        <TabsContent value={KanbanTabs.Overview}>
-            <KanbanBoard {data} />
+        <TabsContent value={ProjectTabs.Overview}>
+            <KanbanBoard />
         </TabsContent>
-        <TabsContent value={KanbanTabs.MyTasks}>
+        <TabsContent value={ProjectTabs.MyTasks}>
             <MyTasks {data} />
         </TabsContent>
     </Tabs>

@@ -19,7 +19,7 @@
     <div class="grow">
         <div class="flex gap-3">
             <Filter {data} />
-            <ViewButton />
+            <ViewButton viewMode={data.viewMode} />
         </div>
     </div>
 </div>
