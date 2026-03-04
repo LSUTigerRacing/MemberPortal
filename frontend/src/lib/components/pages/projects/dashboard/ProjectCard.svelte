@@ -48,7 +48,7 @@
     /* eslint-enable svelte/indent */
 </script>
 
-<Card class="gap-2 cursor-pointer transition-all hover:shadow-lg hover:scale-95 active:scale-90" onclick={() => window.open(`/projects/${project.id}`, "_self")}>
+<Card class="gap-2 cursor-pointer transition-all hover:shadow-lg motion-safe:hover:scale-95 motion-safe:active:scale-90" onclick={() => window.open(`/projects/${project.id}`, "_self")}>
     <CardHeader>
         <div class="flex justify-between items-center">
             <CardTitle class="text-md">{project.title}</CardTitle>
@@ -61,7 +61,7 @@
         <div class="grid grid-cols-2 gap-1">
             <span class="text-xs text-gray-500 font-bold font-manrope uppercase">Due Date</span>
             <span class="text-xs text-gray-500 font-bold font-manrope uppercase">Team</span>
-            <span class="text-sm font-semibold">{new Date(project.deadline).toLocaleDateString()}</span>
+            <span class="text-sm font-semibold">{new Date(project.deadline).toLocaleString(undefined, { month: "long", day: "2-digit", year: "numeric" })}</span>
             <span class="text-sm font-semibold">{project.users.length} {project.users.length === 1 ? "Member" : "Members"}</span>
         </div>
         <div class="flex justify-between items-center mt-4 mb-2">
@@ -73,8 +73,8 @@
             <div class="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2">
                 {#each project.users as user, i (i)}
                     <Avatar class="size-8">
-                        <AvatarImage alt={user} />
-                        <AvatarFallback class="text-xs font-semibold">{user.split(" ").map(x => x.substring(0, 1)).join("")}</AvatarFallback>
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback class="text-xs font-semibold">{user.name.split(" ").map(x => x.substring(0, 1)).join("")}</AvatarFallback>
                     </Avatar>
                 {/each}
             </div>

@@ -34,44 +34,7 @@
 
     import { ProjectPriority, ProjectStatus } from "../../../../shared/config/enums";
 
-    const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([
-        {
-            id: "1",
-            title: "Project 1",
-            priority: ProjectPriority.High,
-            status: ProjectStatus.Draft,
-            deadline: "Dec 1, 2025",
-            users: ["T D", "C T", "R L"],
-            progress: 25
-        },
-        {
-            id: "2",
-            title: "Project 2",
-            priority: ProjectPriority.Medium,
-            status: ProjectStatus.OnHold,
-            deadline: "Dec 2, 2025",
-            users: ["T D", "C T", "R L"],
-            progress: 67
-        },
-        {
-            id: "3",
-            title: "Project 3",
-            priority: ProjectPriority.Low,
-            status: ProjectStatus.Active,
-            deadline: "Dec 2, 2025",
-            users: ["T D", "C T", "R L"],
-            progress: 93
-        },
-        {
-            id: "4",
-            title: "Project 4",
-            priority: ProjectPriority.High,
-            status: ProjectStatus.Completed,
-            deadline: "Dec 2, 2025",
-            users: ["T D", "C T", "R L"],
-            progress: 55
-        }
-    ]);
+    const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([]);
 
     let animateProgress = $state(false);
 
@@ -110,9 +73,9 @@
         <div class="lg:flex justify-between items-center">
             <h1 class="text-2xl font-bold">Projects</h1>
             <div class="flex flex-col lg:flex-row gap-2 mt-2 lg:mt-0">
-                <Input class="lg:w-[300px]!" type="text" placeholder="Search projects..." bind:value={filters.title} autocomplete="off" />
+                <Input class="lg:w-75!" type="text" placeholder="Search projects..." bind:value={filters.title} autocomplete="off" />
                 <Select type="single" name="status-select" bind:value={filters.status}>
-                    <SelectTrigger class="w-full lg:w-[180px] bg-background">{filters.status}</SelectTrigger>
+                    <SelectTrigger class="w-full lg:w-45 bg-background">{filters.status}</SelectTrigger>
                     <SelectContent>
                         <SelectItem label="All Status" value="All Status" disabled={filters.status === "All Status"}>All Status</SelectItem>
                         {#each Object.values(ProjectStatus) as value, i (i)}
@@ -121,7 +84,7 @@
                     </SelectContent>
                 </Select>
                 <Select type="single" name="priority-select" bind:value={filters.priority}>
-                    <SelectTrigger class="w-full lg:w-[180px] bg-background">{filters.priority}</SelectTrigger>
+                    <SelectTrigger class="w-full lg:w-45 bg-background">{filters.priority}</SelectTrigger>
                     <SelectContent>
                         <SelectItem label="All Priorities" value="All Priorities" disabled={filters.priority === "All Priorities"}>All Priorities</SelectItem>
                         {#each Object.values(ProjectPriority) as value, i (i)}
