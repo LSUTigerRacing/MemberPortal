@@ -15,6 +15,7 @@ export const Project = pgTable("project", t => ({
     description: t.text(),
     subsystem: subsystems().notNull(),
     priority: projectPriority().notNull(),
+    status: projectStatus().notNull().default(ProjectStatus.Draft),
 
     startDate: t.timestamp({ withTimezone: true }).notNull(),
     deadline: t.timestamp({ withTimezone: true }).notNull(),
@@ -38,7 +39,7 @@ export const ProjectTask = pgTable("project_task", t => ({
 
     title: t.text().notNull().default("Untitled"),
     description: t.text(),
-    status: projectStatus().notNull().default(ProjectStatus.Draft),
+    completed: t.boolean().notNull().default(false),
     deadline: t.timestamp({ withTimezone: true }),
 
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),

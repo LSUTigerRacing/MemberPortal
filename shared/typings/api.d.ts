@@ -38,6 +38,10 @@ export namespace TRAPI {
          */
         email: string
         /**
+         * The user's avatar.
+         */
+        avatar: string
+        /**
          * The user's permission level.
          */
         role: Role
@@ -228,19 +232,21 @@ export namespace TRAPI {
     interface ProjectTask {
         id: string
         author: string
-        assignees?: string[]
+        /**
+         * For now, expect `avatar` to be an empty string.
+          */
+        assignees?: Array<Record<"name" | "avatar", string>>
 
         title: string
         description?: string
-        status: boolean
+        completed: boolean
         deadline?: string
 
         createdAt: string
         updatedAt: string
     }
 
-    // eslint-disable-next-line @stylistic/type-generic-spacing
-    type ProjectUser = Pick<User, "id" | "name" | "email" /* | "avatar" */>;
+    type ProjectUser = Pick<User, "id" | "name" | "email" | "avatar">;
 
     interface DashboardInfo {
         /**
