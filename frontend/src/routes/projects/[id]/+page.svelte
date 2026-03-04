@@ -12,26 +12,29 @@
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
     import { ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
 
-    const data = $state({
+    let data = $state({
         title: "MP - General",
         tab: ProjectTabs.MyTasks,
         viewMode: ViewMode.Table,
-        filter: ""
+        filter: "",
+        tasks: [
+            { id: "1", author: "DamienVesper", title: "Finish the Member Portal", completed: false, createdAt: "", updatedAt: "" }
+        ]
     });
 </script>
 <div class="xl:mt-16.75 px-8 pt-4">
-    <h1 class="text-2xl">{data.title}</h1>
-    <Tabs value={data.tab}>
-        <TabsList>
+    <h1 class="text-2xl mb-2">{data.title}</h1>
+    <Tabs class="gap-4" value={data.tab}>
+        <TabsList class="bg-background justify-start rounded-none border-b p-0">
             {#each Object.values(ProjectTabs) as value, i (i)}
-                <TabsTrigger value={value}>{value}</TabsTrigger>
+                <TabsTrigger class="bg-background border-b-border dark:data-[state=active]:bg-background data-[state=active]:border-border data-[state=active]:border-b-background h-full rounded-none rounded-t border border-transparent data-[state=active]:-mb-0.5 data-[state=active]:shadow-none! dark:border-b-0 dark:data-[state=active]:-mb-0.5" {value}>{value}</TabsTrigger>
             {/each}
         </TabsList>
         <TabsContent value={ProjectTabs.Overview}>
             <KanbanBoard />
         </TabsContent>
         <TabsContent value={ProjectTabs.MyTasks}>
-            <MyTasks {data} />
+            <MyTasks bind:data={data} />
         </TabsContent>
     </Tabs>
 </div>

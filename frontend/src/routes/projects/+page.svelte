@@ -34,44 +34,7 @@
 
     import { ProjectPriority, ProjectStatus } from "../../../../shared/config/enums";
 
-    const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([
-        {
-            id: "1",
-            title: "Project 1",
-            priority: ProjectPriority.High,
-            status: ProjectStatus.Draft,
-            deadline: "2025-12-01T06:00:00.000Z",
-            users: ["T D", "C T", "R L"],
-            progress: 25
-        },
-        {
-            id: "2",
-            title: "Project 2",
-            priority: ProjectPriority.Medium,
-            status: ProjectStatus.OnHold,
-            deadline: "2025-12-02T06:00:00.000Z",
-            users: ["T D", "C T", "R L"],
-            progress: 67
-        },
-        {
-            id: "3",
-            title: "Project 3",
-            priority: ProjectPriority.Low,
-            status: ProjectStatus.Active,
-            deadline: "2025-01-16T06:00:00.000Z",
-            users: ["T D", "C T", "R L"],
-            progress: 93
-        },
-        {
-            id: "4",
-            title: "Project 4",
-            priority: ProjectPriority.High,
-            status: ProjectStatus.Completed,
-            deadline: "2025-02-28T06:00:00.000Z",
-            users: ["T D", "C T", "R L"],
-            progress: 55
-        }
-    ]);
+    const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([]);
 
     let animateProgress = $state(false);
 

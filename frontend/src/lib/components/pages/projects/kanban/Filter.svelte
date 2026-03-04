@@ -8,7 +8,7 @@
         CommandSeparator
     } from "$lib/components/ui/command";
 
-    const { data } = $props();
+    let { data = $bindable() } = $props();
 </script>
 
 <Command>
@@ -16,4 +16,5 @@
         placeholder="Filter by keyword or field"
         bind:value={data.filter}
     />
+    <CommandEmpty class="hidden peer-first:focus:block">No results found.</CommandEmpty>
 </Command>

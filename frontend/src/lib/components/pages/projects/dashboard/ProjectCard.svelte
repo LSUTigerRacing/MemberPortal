@@ -73,8 +73,8 @@
             <div class="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2">
                 {#each project.users as user, i (i)}
                     <Avatar class="size-8">
-                        <AvatarImage alt={user} />
-                        <AvatarFallback class="text-xs font-semibold">{user.split(" ").map(x => x.substring(0, 1)).join("")}</AvatarFallback>
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback class="text-xs font-semibold">{user.name.split(" ").map(x => x.substring(0, 1)).join("")}</AvatarFallback>
                     </Avatar>
                 {/each}
             </div>

@@ -9,8 +9,12 @@ type CreateProjectBody = Pick<TRAPI.Project, "title" | "subsystem" | "status" | 
     & Partial<Pick<TRAPI.Project, "description" | "priority">
     & { author: TRAPI.User["email"], users: Array<TRAPI.User["email"]> }>;
 
-type CreateProjectTaskBody = Pick<TRAPI.ProjectTask, "title" | "status">
+type CreateProjectTaskBody = Pick<TRAPI.ProjectTask, "title" | "completed">
     & Partial<Pick<TRAPI.ProjectTask, "description" | "assignees" | "deadline">>;
+
+type FetchProjectsResponse = Array<
+    Pick<TRAPI.Project, "id" | "title" | "priority" | "status" | "deadline">
+    & { users: Array<Pick<TRAPI.ProjectUser, "name" | "avatar">>, progress: number }>;
 
 /**
  * Interface to interact with the TigerRacing API.
@@ -64,7 +68,7 @@ export class API extends Axios {
     /**
      * Fetch all projects.
      */
-    fetchProjects = async () => await this.get<Array<Pick<TRAPI.Project, "id" | "title" | "priority" | "status" | "deadline"> & { users: Array<TRAPI.ProjectUser["name"]>, progress: number }>>("/projects/list");
+    fetchProjects = async () => await this.get<FetchProjectsResponse>("/projects/list");
 
     /**
      * Fetch a specific project.
