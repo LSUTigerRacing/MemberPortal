@@ -6,12 +6,6 @@
 
     import { Button } from "$lib/components/ui/button";
     import {
-        DropdownMenuContent,
-        DropdownMenu,
-        DropdownMenuItem,
-        DropdownMenuTrigger
-    } from "$lib/components/ui/dropdown-menu";
-    import {
         Popover,
         PopoverContent,
         PopoverTrigger
@@ -49,12 +43,5 @@
                 </TabsTrigger>
             </TabsList>
         </Tabs>
-
-        <!-- <DropdownMenuItem>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-        </DropdownMenuItem> -->
     </PopoverContent>
 </Popover>

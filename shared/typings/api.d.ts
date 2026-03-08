@@ -1,6 +1,7 @@
 import type {
     OrderStatus,
     ProjectPriority,
+    ProjectTaskPriority,
     Role,
     ShirtSize,
     Subsystem,
@@ -239,6 +240,7 @@ export namespace TRAPI {
 
         title: string
         description?: string
+        priority: ProjectTaskPriority
         completed: boolean
         deadline?: string
 

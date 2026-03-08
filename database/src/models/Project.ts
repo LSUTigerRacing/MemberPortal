@@ -3,9 +3,14 @@ import { relations } from "drizzle-orm";
 
 import { User } from "./User.js";
 
-import { projectPriority, projectStatus, subsystems } from "./enums.js";
+import {
+    projectPriority,
+    projectStatus,
+    subsystems,
+    projectTaskPriority
+} from "./enums.js";
 
-import { ProjectStatus } from "../../../shared/config/enums.js";
+import { ProjectStatus, ProjectTaskPriority } from "../../../shared/config/enums.js";
 
 export const Project = pgTable("project", t => ({
     id: t.serial().primaryKey(),
@@ -39,6 +44,7 @@ export const ProjectTask = pgTable("project_task", t => ({
 
     title: t.text().notNull().default("Untitled"),
     description: t.text(),
+    priority: projectTaskPriority().notNull().default(ProjectTaskPriority.Medium),
     completed: t.boolean().notNull().default(false),
     deadline: t.timestamp({ withTimezone: true }),
 

@@ -35,8 +35,7 @@
         <span>{task.title}</span>
         <div>
             {#if task.deadline}
-                <!-- todo: use @internationalized/date -->
-                <Badge>{task.deadline}</Badge>
+                <Badge>{new Date(task.deadline).toLocaleString()}</Badge>
             {/if}
         </div>
         <div class="*:data-[slot=avatar]:ring-background flex right-0.5 -space-x-2 *:data-[slot=avatar]:ring-2">

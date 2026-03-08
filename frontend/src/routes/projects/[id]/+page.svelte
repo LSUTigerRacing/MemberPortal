@@ -12,13 +12,15 @@
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
     import { ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
 
+    import { ProjectTaskPriority } from "../../../../../shared/config/enums";
+
     let data = $state({
         title: "MP - General",
         tab: ProjectTabs.MyTasks,
         viewMode: ViewMode.Table,
         filter: "",
         tasks: [
-            { id: "1", author: "DamienVesper", title: "Finish the Member Portal", completed: false, createdAt: "", updatedAt: "" }
+            { id: "1", author: "DamienVesper", title: "Finish the Member Portal", priority: ProjectTaskPriority.Medium, completed: false, createdAt: "", updatedAt: "" }
         ]
     });
 </script>

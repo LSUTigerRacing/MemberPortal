@@ -9,7 +9,7 @@
 <div class="flex">
     <div></div>
     <div class="grow">
-        <div class="flex gap-3">
+        <div class="flex gap-3 mb-4">
             <Filter bind:data={data} />
             <ViewButton viewMode={data.viewMode} />
         </div>
