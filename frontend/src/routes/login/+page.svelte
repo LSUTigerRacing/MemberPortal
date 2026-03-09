@@ -6,7 +6,7 @@
 
     import Logo from "$lib/img/logos/logo_white.webp";
     import LoginBg from "$lib/img/backgrounds/login.webp";
-    import Microsoft from "$lib/img/logos/microsoft.svg";
+    import Google from "$lib/img/logos/google.svg";
 </script>
 
 <div id="login-container" class="w-dvw h-dvh">
@@ -17,8 +17,8 @@
                     <div class="flex flex-col gap-6">
                         <img src={Logo} alt="TigerRacing logo" />
                         <a class="{buttonVariants({ variant: "ghost" })} bg-background text-muted-foreground font-black! text-2xl! p-8! hover:bg-primary hover:text-background active:bg-foreground motion-safe:active:scale-95" href={resolve("/api/auth/microsoft", {})}>
-                            <img src={Microsoft} alt="Microsoft logo" />
-                            Sign in with Microsoft
+                            <img src={Google} alt="Google logo" />
+                            Sign in with Google
                         </a>
                         <span class="text-sm text-muted text-center">
                             Don't have an account?
