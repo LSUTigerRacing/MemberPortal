@@ -215,7 +215,6 @@ export namespace TRAPI {
         deadline: string
 
         columns: ProjectColumn[]
-        tasks: ProjectTask[]
         users: ProjectUser[]
 
         createdAt: string

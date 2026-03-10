@@ -2,17 +2,25 @@
     import Filter from "./Filter.svelte";
     import TaskTable from "./TaskTable.svelte";
     import ViewButton from "./ViewButton.svelte";
+    import type { ProjectState } from "./helpers";
 
-    let { data = $bindable() } = $props();
+    import type { TRAPI } from "../../../../../../../shared/typings/api";
+
+    let {
+        filter = $bindable(),
+        viewMode = $bindable(),
+        tab,
+        tasks
+    }: Pick<ProjectState, "filter" | "viewMode" | "tab"> & { tasks: TRAPI.ProjectTask[] } = $props();
 </script>
 
 <div class="flex">
     <div></div>
     <div class="grow">
         <div class="flex gap-3 mb-4">
-            <Filter bind:data={data} />
-            <ViewButton viewMode={data.viewMode} />
+            <Filter bind:filter={filter} />
+            <ViewButton viewMode={viewMode} />
         </div>
-        <TaskTable tab={data.tab} tasks={data.tasks} />
+        <TaskTable tab={tab} tasks={tasks} />
     </div>
 </div>

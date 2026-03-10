@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Circle from "@lucide/svelte/icons/circle";
+    import CircleSmall from "@lucide/svelte/icons/circle-small";
     import Ellipsis from "@lucide/svelte/icons/ellipsis";
     import Plus from "@lucide/svelte/icons/plus";
 
@@ -16,17 +16,14 @@
 
     import type { TRAPI } from "../../../../../../../shared/typings/api";
 
-    const { title, color, tasks }: {
-        title: string
-        color: string
-        tasks: TRAPI.ProjectTask[]
-    } = $props();
+    const { column }: { column: TRAPI.ProjectColumn } = $props();
 </script>
 
 <Card>
-    <CardHeader>
-        <Circle {color} />
-        {title}
+    <CardHeader class="flex items-center">
+        <CircleSmall color={column.color} fill={column.color} />
+        {column.title}
+        <div class="grow"></div>
         <DropdownMenu>
             <DropdownMenuTrigger>
                 {#snippet child({ props })}
@@ -39,12 +36,12 @@
         </DropdownMenu>
     </CardHeader>
     <CardContent>
-        {#each tasks as task (task.id)}
+        {#each column.tasks as task (task.id)}
             <KanbanCard {task} />
         {/each}
     </CardContent>
     <CardFooter>
-        <Button variant="ghost" class="w-full mx-0.5">
+        <Button variant="ghost" class="w-full mx-0.5 flex justify-start">
             <Plus />
             Add a card
         </Button>

@@ -24,17 +24,24 @@
 
     import MyTasks from "$lib/components/pages/projects/kanban/MyTasks.svelte";
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
-    import { ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
+    import { type ProjectState, ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
 
     import { ProjectTaskPriority } from "../../../../../shared/config/enums";
 
-    let data = $state({
+    let data = $state<ProjectState>({
         title: "MP - General",
-        tab: ProjectTabs.MyTasks,
+        tab: ProjectTabs.Overview,
         viewMode: ViewMode.Table,
         filter: "",
-        tasks: [
-            { id: "1", author: "DamienVesper", title: "Finish the Member Portal", priority: ProjectTaskPriority.Medium, completed: false, createdAt: "", updatedAt: "" }
+        columns: [
+            {
+                id: "0",
+                title: "Test",
+                color: "#1e90ff",
+                tasks: [
+                    { id: "0", author: "DamienVesper", title: "Finish the Member Portal", priority: ProjectTaskPriority.Medium, completed: false, createdAt: "", updatedAt: "" }
+                ]
+            }
         ]
     });
 
@@ -42,6 +49,8 @@
         editing: false,
         draftTitle: "MP - General"
     });
+
+    const tasks = $derived(data.columns.flatMap(col => col.tasks));
 </script>
 <div class="absolute w-full xl:h-screen bg-[#f3d2fa]">
     <div class="xl:mt-16.75 bg-body"></div>
@@ -82,11 +91,16 @@
                 {/each}
             </TabsList>
         </div>
-        <TabsContent class="bg-primary px-8" value={ProjectTabs.Overview}>
-            <KanbanBoard />
+        <TabsContent class="bg-[#f3d2fa] px-8" value={ProjectTabs.Overview}>
+            <KanbanBoard columns={data.columns} />
         </TabsContent>
         <TabsContent class="bg-[#f3d2fa] px-4 py-4" value={ProjectTabs.MyTasks}>
-            <MyTasks bind:data={data} />
+            <MyTasks
+                bind:filter={data.filter}
+                bind:viewMode={data.viewMode}
+                tab={data.tab}
+                {tasks}
+            />
         </TabsContent>
     </Tabs>
 </div>
