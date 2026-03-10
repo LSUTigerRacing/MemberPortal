@@ -1,6 +1,8 @@
 <script lang="ts">
     import { page } from "$app/state";
 
+    import TooltipProvider from "$lib/components/ui/tooltip/tooltip-provider.svelte";
+
     import Navbar from "$lib/components/layout/Navbar.svelte";
 
     import "../lib/css/index.css";
@@ -11,4 +13,6 @@
 {#if page.url.pathname !== "/login"}
     <Navbar />
 {/if}
-{@render children()}
+<TooltipProvider>
+    {@render children()}
+</TooltipProvider>

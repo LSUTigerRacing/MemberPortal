@@ -65,9 +65,9 @@
                     </TableCell>
                     <TableCell>
                         {#if task.completed}
-                            <Badge class="bg-green-500 text-white">Active</Badge>
-                        {:else}
                             <Badge class="bg-purple-500 text-white">Completed</Badge>
+                        {:else}
+                            <Badge class="bg-green-500 text-white">Active</Badge>
                         {/if}
                     </TableCell>
                     <TableCell class="pe-6">

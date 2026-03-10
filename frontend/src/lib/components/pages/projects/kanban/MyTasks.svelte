@@ -19,7 +19,7 @@
     <div class="grow">
         <div class="flex gap-3 mb-4">
             <Filter bind:filter={filter} />
-            <ViewButton viewMode={viewMode} />
+            <ViewButton bind:viewMode={viewMode} />
         </div>
         <TaskTable tab={tab} tasks={tasks} />
     </div>

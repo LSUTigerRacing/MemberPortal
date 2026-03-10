@@ -19,15 +19,15 @@
     const { column }: { column: TRAPI.ProjectColumn } = $props();
 </script>
 
-<Card>
-    <CardHeader class="flex items-center">
+<Card class="gap-2 px-2 py-0">
+    <CardHeader class="flex items-center text-sm font-semibold ps-1 pe-0 pt-2">
         <CircleSmall color={column.color} fill={column.color} />
         {column.title}
         <div class="grow"></div>
         <DropdownMenu>
             <DropdownMenuTrigger>
                 {#snippet child({ props })}
-                    <Button {...props} size="icon" variant="ghost" class="h-8 w-8 p-0 hover:bg-primary hover:text-white hover:border-primary">
+                    <Button {...props} size="icon" variant="ghost" class="h-8 w-8 p-0">
                         <Ellipsis />
                     </Button>
                 {/snippet}
@@ -35,13 +35,14 @@
             <DropdownMenuContent></DropdownMenuContent>
         </DropdownMenu>
     </CardHeader>
-    <CardContent>
+    <CardContent class="max-h-[50dvh] px-0.5 overflow-y-auto flex flex-col gap-2">
         {#each column.tasks as task (task.id)}
+            <KanbanCard {task} />
             <KanbanCard {task} />
         {/each}
     </CardContent>
-    <CardFooter>
-        <Button variant="ghost" class="w-full mx-0.5 flex justify-start">
+    <CardFooter class="p-0 ps-2 pb-2">
+        <Button variant="ghost" class="w-full flex justify-start">
             <Plus />
             Add a card
         </Button>

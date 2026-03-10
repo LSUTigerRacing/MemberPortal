@@ -20,19 +20,20 @@
     const { task }: { task: TRAPI.ProjectTask } = $props();
 </script>
 
-<Card>
-    <CardContent class="flex flex-col">
+<Card class="w-[245px] p-2 relative rounded-sm cursor-pointer bg-accent border-accent shadow-none hover:border-primary">
+    <!-- 1.5625rem = 25px -->
+    <CardContent class="flex flex-col p-0 min-h-[1.5625rem]">
         <DropdownMenu>
             <DropdownMenuTrigger>
                 {#snippet child({ props })}
-                    <Button {...props} size="icon" variant="ghost" class="h-8 w-8 p-0 right-0.5 top-0.5 hover:bg-primary hover:text-white hover:border-primary">
+                    <Button {...props} size="icon-sm" variant="ghost" class="h-8 w-8 p-0 absolute right-0.5 top-0.5">
                         <SquarePen />
                     </Button>
                 {/snippet}
             </DropdownMenuTrigger>
             <DropdownMenuContent></DropdownMenuContent>
         </DropdownMenu>
-        <span>{task.title}</span>
+        <span class="text-sm font-light">{task.title}</span>
         <div>
             {#if task.deadline}
                 <Badge>{new Date(task.deadline).toLocaleString()}</Badge>

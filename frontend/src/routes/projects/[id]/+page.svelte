@@ -41,6 +41,22 @@
                 tasks: [
                     { id: "0", author: "DamienVesper", title: "Finish the Member Portal", priority: ProjectTaskPriority.Medium, completed: false, createdAt: "", updatedAt: "" }
                 ]
+            },
+            {
+                id: "1",
+                title: "Test",
+                color: "#ffa500",
+                tasks: [
+                    { id: "1", author: "blazeninja1", title: "Exist", priority: ProjectTaskPriority.Low, completed: true, createdAt: "", updatedAt: "" }
+                ]
+            },
+            {
+                id: "2",
+                title: "Test",
+                color: "#663399",
+                tasks: [
+                    { id: "2", author: "rickyxliang", title: "Finish Backend", priority: ProjectTaskPriority.High, completed: false, createdAt: "", updatedAt: "" }
+                ]
             }
         ]
     });
@@ -91,10 +107,14 @@
                 {/each}
             </TabsList>
         </div>
-        <TabsContent class="bg-[#f3d2fa] px-8" value={ProjectTabs.Overview}>
-            <KanbanBoard columns={data.columns} />
+        <TabsContent class="bg-[#f3d2fa] p-4" value={ProjectTabs.Overview}>
+            <KanbanBoard
+                bind:filter={data.filter}
+                bind:viewMode={data.viewMode}
+                columns={data.columns}
+            />
         </TabsContent>
-        <TabsContent class="bg-[#f3d2fa] px-4 py-4" value={ProjectTabs.MyTasks}>
+        <TabsContent class="bg-[#f3d2fa] p-4" value={ProjectTabs.MyTasks}>
             <MyTasks
                 bind:filter={data.filter}
                 bind:viewMode={data.viewMode}

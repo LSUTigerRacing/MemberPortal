@@ -17,6 +17,7 @@
     <CommandInput
         placeholder="Filter by keyword or field"
         bind:value={filter}
+        disabled
     />
     <CommandEmpty class="hidden peer-first:focus:block">No results found.</CommandEmpty>
 </Command>
