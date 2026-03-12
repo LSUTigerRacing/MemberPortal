@@ -45,7 +45,8 @@ public class TaskService : ITaskService
 
         if (response == null)
         {
-            throw new Exception("Task not found");
+            Console.WriteLine("Task not found");
+            return null;
         }
 
         var taskDetail = new TaskDetailDto
@@ -65,56 +66,93 @@ public class TaskService : ITaskService
         return taskDetail;
     }
 
-    public async Task<TaskDetailDto> CreateTaskAsync(Guid projectId, CreateTaskDto createDto)
+    public async Task<bool> CreateTaskAsync(Guid projectId, CreateTaskDto createDto)
     {
         var newTask = new ProjectTaskModel
         {
             Id = Guid.NewGuid(),
+            ProjectId = projectId,
+            AuthorId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // This should be replaced with the actual author ID from the context
             Title = createDto.Title,
-            Deadline = createDto.Deadline
+            Deadline = createDto.Deadline,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
 
-        var response = await _supabaseClient
-        .From<ProjectTaskModel>()
-        .Insert(newTask);
-
-
-        return new TaskDetailDto
+        try
         {
-            Id = newTask.Id,
-            Title = newTask.Title
-        };
+            var response = await _supabaseClient
+            .From<ProjectTaskModel>()
+            .Insert(newTask);
+        } catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating task: {ex.Message}");
+            return false;
+        }
+
+        return true;
     }
 
-    public async Task<TaskDetailDto> UpdateTaskAsync(Guid projectId, UpdateTaskDto createDto)
+    public async Task<bool> UpdateTaskAsync(Guid id, UpdateTaskDto updateDto)
     {
-        var newTask = new ProjectTaskModel
+        try
         {
-            Id = Guid.NewGuid(),
-            Title = createDto.Title,
-            Deadline = createDto.Deadline
-        };
+            var model = await _supabaseClient.From<ProjectTaskModel>()
+                .Where(p => p.Id == id)
+                .Single();
 
-        var response = await _supabaseClient
-        .From<ProjectTaskModel>()
-        .Insert(newTask);
+            if (model == null)
+            {
+                Console.WriteLine("Project not found");
+                return false;
+            }
 
+            if (!string.IsNullOrEmpty(updateDto.Title))
+            {
+                model.Title = updateDto.Title;
+            }
+            if (!string.IsNullOrEmpty(updateDto.Description))
+            {
+                model.Description = updateDto.Description;
+            }
+            if (updateDto.Deadline != null)
+            {
+                model.Deadline = updateDto.Deadline.Value;
+            }
+            model.UpdatedAt = DateTime.UtcNow;
 
-        return new TaskDetailDto
+            var response = await _supabaseClient
+                .From<ProjectTaskModel>()
+                .Update(model);
+
+            return response.Models.Count > 0;
+        }
+        catch (Exception ex)
         {
-            Id = newTask.Id,
-            Title = newTask.Title
-        };
+            Console.WriteLine($"Failed to update task: {ex.Message}");
+            return false;
+        }
     }
     
-    public async Task<TaskDetailDto> DeleteTaskAsync(Guid id)
+    public async Task<bool> DeleteTaskAsync(Guid id)
     {
-        await _supabaseClient
+        var toDelete = new ProjectTaskModel
+        {
+            Id = id
+        };
+
+        var response = await _supabaseClient
         .From<ProjectTaskModel>()
-        .Where(x => x.Id == id)
-        .Delete();
+        .Delete(toDelete);
 
+        var deletedTask = response.Model;
 
+        if (deletedTask == null)
+        {
+            Console.WriteLine("Task not found or could not be deleted");
+            return false;
+        }
 
+        return true;
     }
 }

@@ -18,6 +18,11 @@ public class TaskController : ControllerBase
     [HttpGet("list")]
     public async Task<IActionResult> GetAllTasks([FromQuery] Guid projectId)
     {
+        if (projectId == Guid.Empty)
+        {
+            return BadRequest("Project ID is required");
+        }
+        
         var tasks = await _TaskService.GetAllTasksAsync(projectId);
         return Ok(tasks);
     }
@@ -43,14 +48,14 @@ public class TaskController : ControllerBase
     }
 
     [HttpPatch("update")]
-    public async Task<IActionResult> UpdateTask([FromQuery] Guid id, UpdateTaskDto createDto)
+    public async Task<IActionResult> UpdateTask([FromQuery] Guid id, UpdateTaskDto updateDto)
     {
-        var task = await _TaskService.UpdateTaskAsync(id, createDto);
+        var task = await _TaskService.UpdateTaskAsync(id, updateDto);
         return Ok(task);
     }
 
 
-    [HttpPost("delete")]
+    [HttpDelete("delete")]
     public async Task<IActionResult> DeleteTask([FromQuery] Guid id)
     {
         var task = await _TaskService.DeleteTaskAsync(id);

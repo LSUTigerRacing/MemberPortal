@@ -1,8 +1,12 @@
+using TRFSAE.MemberPortal.API.Enums;
+
 namespace TRFSAE.MemberPortal.API.DTOs;
 
 public class CreateTaskDto
 {
-    public required string Title { get; set; }
-    public bool CompletionStatus { get; set; }
+    public string Title { get; set; } = null!;
+    public ProjectStatus Status { get; set; }
+    public string? Description { get; set; }
+    // public Guid[]? Assignees { get; set; }
     public DateTime Deadline { get; set; }
 }
