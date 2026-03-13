@@ -55,7 +55,7 @@ export class API extends Axios {
     updateOrder = async (
         id: TRAPI.Order["id"],
         data: Partial<MutableDocument<TRAPI.Order>>
-    ) => await this.patch<TRAPI.User, AxiosResponse<TRAPI.User>, Partial<MutableDocument<TRAPI.Order>>>(`/orders/update?id=${id}`, data);
+    ) => await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.Order>>>(`/orders/update?id=${id}`, data);
 
     /**
      * Review an order.
