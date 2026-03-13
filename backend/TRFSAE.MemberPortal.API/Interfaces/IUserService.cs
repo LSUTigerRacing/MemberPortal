@@ -5,14 +5,9 @@ namespace TRFSAE.MemberPortal.API.Interfaces;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync(int pageNumber, int pageSize, string? search, bool? completedHazingForm, bool? paidMemberFee, int? gradDate, ShirtSize? shirtSize, Subsystem? subsystem);
-    Task<UserDetailDto> GetUserByIDAsync(Guid userID);
-    Task<CreateUserResponse> CreateUserAsync(CreateUserDto createDto);
-    Task<UserResponseDto> UpdateUserByIdAsync(Guid userID, UserUpdateDto updateDto);
-    Task<bool> DeleteUserAsync(Guid currentUserId, string confirmationString);
-    //Task GetAllUsersAsync(UserSearchDto searchDto);
-    //Task<bool> AssignUserRoleAsync(Guid userID, Role role);
-    //Task<bool> RemoveUserRoleAsync(Guid userID);
-
-    // public Task<UserResponseDto> GetUserRolesAsync(Guid userID);
+    Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync();
+    Task<UserDetailDto> GetUserAsync(Guid id);
+    Task<bool> CreateUserAsync(CreateUserDto createDto);
+    Task<bool> UpdateUserAsync(Guid userID, UserUpdateDto updateDto);
+    Task<bool> DeleteUserAsync(Guid id);
 }
