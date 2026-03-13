@@ -15,164 +15,136 @@ public class OrderService : IOrderService
         _supabaseClient = supabaseClient;
     }
 
-    public Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto dto)
+    public async Task<IEnumerable<OrderSummaryDto>> GetAllOrdersAsync()
+    {
+        var response = await _supabaseClient
+            .From<OrderModel>()
+            .Order(p => p.CreatedAt, Supabase.Postgrest.Constants.Ordering.Ascending)
+            .Select("id,requesterId,name,subsystem,status,deadline")
+            .Get();
+
+        var orderSummaries = response.Models.Select(p => new OrderSummaryDto
+        {
+            Id = p.Id,
+            RequesterId = p.RequesterId,
+            Name = p.Name,
+            Subsystem = p.Subsystem,
+            Status = p.Status,
+            Deadline = p.Deadline,
+        });
+
+        return orderSummaries;
+    }
+
+    public async Task<OrderDetailDto> GetOrderAsync(Guid id)
+    {
+        var response = await _supabaseClient
+            .From<OrderModel>()
+            .Select("*")
+            .Where(p => p.Id == id)
+            .Single();
+
+        if (response == null)
+        {
+            Console.WriteLine($"Order not found.");
+            return null!;
+        }
+
+        var orderDetail = new OrderDetailDto
+        {
+            Id = response.Id,
+            RequesterId = response.RequesterId,
+            Name = response.Name,
+            Subsystem = response.Subsystem,
+            Status = response.Status,
+            Deadline = response.Deadline,
+            Notes = response.Notes,
+            CreatedAt = response.CreatedAt,
+            UpdatedAt = response.UpdatedAt
+        };
+
+        return orderDetail;
+    }
+
+    public async Task<bool> CreateOrderAsync(OrderCreateDto dto)
+    {
+        var newOrder = new OrderModel
+        {
+            Id = Guid.NewGuid(),
+            RequesterId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // temp until JWT is setup
+            Name = dto.Name,
+            Subsystem = dto.Subsystem,
+            Status = dto.Status,
+            Deadline = dto.Deadline,
+            Notes = dto.Notes,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        try
+        {
+            var response = await _supabaseClient
+                .From<OrderModel>()
+                .Insert(newOrder);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating Order: {ex.Message}");
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> UpdateOrderAsync(Guid id, OrderUpdateDto updateDto)
+    {
+        try
+        {
+            var model = await _supabaseClient.From<OrderModel>()
+                .Where(p => p.Id == id)
+                .Single();
+
+            if (model == null)
+            {
+                Console.WriteLine("Project not found");
+                return false;
+            }
+
+            if (!string.IsNullOrEmpty(updateDto.Name))
+            {
+                model.Name = updateDto.Name;
+            }
+            if (!string.IsNullOrEmpty(updateDto.Notes))
+            {
+                model.Notes = updateDto.Notes;
+            }
+            if (updateDto.Subsystem != null)
+            {
+                model.Subsystem = updateDto.Subsystem.Value;
+            }
+            if (updateDto.Status != null)
+            {
+                model.Status = updateDto.Status.Value;
+            }
+            model.UpdatedAt = DateTime.UtcNow;
+
+            var response = await _supabaseClient
+                .From<OrderModel>()
+                .Update(model);
+
+            return response.Models.Count > 0;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to update order: {ex.Message}");
+            return false;
+        }
+    }   
+
+    public Task<bool> CreateOrderReviewAsync(OrderCreateDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> DeleteOrderAsync(Guid id, string confirmationString)
-    {
-        throw new NotImplementedException();
-    }
 
-    public Task<List<OrderResponseDto>> GetAllOrdersAsync(OrderSearchDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<OrderResponseDto> GetOrderByIDAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<OrderResponseDto> UpdateOrderByIDAsync(Guid id, OrderUpdateDto dto)
-    {
-        throw new NotImplementedException();
-    }
-    // public async Task<List<OrderResponseDto>> GetAllOrdersAsync(OrderSearchDto dto)
-    // {
-    //     var response = await _supabaseClient
-    //         .From<OrderModel>()
-    //         .Get();
-    //             return response.Models.Select(MapToDto).ToList();
-    //     }
-
-    // public async Task<OrderResponseDto> GetOrderByIDAsync(Guid id)
-    // {
-    //     var response = await _supabaseClient
-    //       .From<OrderModel>()
-    //       .Where(x => x.Id == id)
-    //       .Single();
-
-    //     if (response == null)
-    //     {
-    //         throw new Exception("Purchase item not found");
-    //     }
-
-    //     return MapToDto(response);
-    // }
-
-    // public async Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto dto)
-    // {
-    //     var newModel = MapToModel(dto);
-    //     if (newModel.Id == Guid.Empty) newModel.Id = Guid.NewGuid();
-    //     if (newModel.CreatedAt == default) newModel.CreatedAt = DateTime.UtcNow;
-
-    //     var insert = await _supabaseClient
-    //         .From<OrderModel>()
-    //         .Insert(newModel);
-
-    //     if (insert.Models is null || insert.Models.Count == 0)
-    //         throw new Exception("Failed to create purchase item");
-
-    //     return MapToDto(insert.Models.First());
-    // }
-    // public async Task<OrderResponseDto> UpdateOrderByIDAsync(Guid id, OrderUpdateDto dto)
-    // {
-    //     var updates = new Dictionary<string, object?>();
-
-    //     updates["id"] = id;
-    //     if (dto.Requester != Guid.Empty) updates["requester"] = dto.Requester;
-    //     if (!string.IsNullOrWhiteSpace(dto.PartUrl)) updates["part_url"] = dto.PartUrl;
-    //     if (!string.IsNullOrWhiteSpace(dto.PartName)) updates["part_name"] = dto.PartName;
-    //     if (dto.ManufacturerPtNo != 0) updates["manufacturer_pt_no"] = dto.ManufacturerPtNo;
-    //     if (dto.UnitPrice > 0) updates["unit_price"] = dto.UnitPrice;
-    //     if (dto.Quantity > 0) updates["quantity"] = dto.Quantity;
-    //     if (!string.IsNullOrWhiteSpace(dto.Supplier)) updates["supplier"] = dto.Supplier;
-    //     if (dto.OrderStatus != default) updates["purchase_status"] = dto.OrderStatus.ToString();
-    //     if (dto.Notes != null) updates["notes"] = dto.Notes;
-    //     if (dto.NeededBy != null) updates["needed_by"] = dto.NeededBy;
-    //     if (!string.IsNullOrWhiteSpace(dto.PoNumber)) updates["po_no"] = dto.PoNumber;
-    //     if (dto.OrderDate != null) updates["order_date"] = dto.OrderDate;
-    //     if (dto.OrderReceivedDate != null) updates["order_received_date"] = dto.OrderReceivedDate;
-    //     if (!string.IsNullOrWhiteSpace(dto.OrderActiveStatus)) updates["order_active_status"] = dto.OrderActiveStatus;
-    //     if (dto.RequestId != null) updates["request_id"] = dto.RequestId;
-    //     if (dto.Approvals != null) updates["approvals"] = dto.Approvals;
-    //     updates["updated_at"] = DateTime.UtcNow;
-
-    //     var rpc = await _supabaseClient
-    //         .Rpc("update_purchase_item", new { updates });
-
-    //     var updated = JsonSerializer.Deserialize<List<OrderResponseDto>>(rpc.Content ?? "[]");
-
-    //     if (updated == null)
-    //         throw new Exception("Purchase item not found or update failed");
-
-    //     return updated.FirstOrDefault() ?? new OrderResponseDto();
-    // }
-
-    // public async Task<bool> DeleteOrderAsync(Guid id, string confirmationString)
-    // {
-    //     if (confirmationString != "confirm")
-    //         return false;
-
-    //     try
-    //     {
-    //         await _supabaseClient
-    //           .From<OrderModel>()
-    //           .Where(x => x.Id == id)
-    //           .Delete();
-    //         return true;
-    //     }
-    //     catch
-    //     {
-    //         return false;
-    //     }
-    // }
-
-    // private static OrderResponseDto MapToDto(OrderModel m)
-    // {
-    //     return new OrderResponseDto
-    //     {
-    //         Id = m.Id,
-    //         Requester = m.RequesterId,
-    //         PartUrl = m.PartUrl,
-    //         PartName = m.PartName,
-    //         ManufacturerPtNo = m.ManufacturerPtNo,
-    //         UnitPrice = m.UnitPrice,
-    //         Quantity = m.Quantity,
-    //         Supplier = m.Supplier,
-    //         OrderStatus = m.OrderStatus,
-    //         Notes = m.Notes,
-    //         CreatedAt = m.CreatedAt,
-    //         NeededBy = m.NeededBy,
-    //         PoNumber = m.PoNo,
-    //         OrderDate = m.OrderDate,
-    //         OrderReceivedDate = m.OrderReceivedDate,
-    //         OrderActiveStatus = m.OrderActiveStatus,
-    //         RequestId = m.RequestId,
-    //         Approvals = m.Approvals
-    //     };
-    // }
-
-    // private static OrderModel MapToModel(OrderCreateDto d)
-    // {
-    //     return new OrderModel
-    //     {
-    //         Requester = d.Requester,
-    //         PartUrl = d.PartUrl,
-    //         PartName = d.PartName,
-    //         ManufacturerPtNo = d.ManufacturerPtNo,
-    //         UnitPrice = d.UnitPrice,
-    //         Quantity = d.Quantity,
-    //         Supplier = d.Supplier,
-    //         OrderStatus = d.OrderStatus,
-    //         Notes = d.Notes,
-    //         NeededBy = d.NeededBy,
-    //         OrderActiveStatus = d.OrderActiveStatus,
-    //         RequestId = d.RequestId,
-    //         Approvals = d.Approvals,
-    //         OrderDate = DateTime.Today
-    //     };
-    // }
 }
