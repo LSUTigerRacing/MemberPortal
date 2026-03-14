@@ -60,7 +60,7 @@ export const ProjectUser = pgTable("project_user", t => ({
 ]);
 
 export const ProjectTaskUser = pgTable("project_task_user", t => ({
-    taskId: t.uuid().notNull().references(() => Project.id, { onDelete: "cascade" }),
+    taskId: t.uuid().notNull().references(() => ProjectTask.id, { onDelete: "cascade" }),
     userId: t.uuid().notNull().references(() => User.id, { onDelete: "cascade" })
 }));
 
