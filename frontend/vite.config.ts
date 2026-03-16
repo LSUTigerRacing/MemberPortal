@@ -3,7 +3,6 @@ import { resolve } from "path";
 
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
-import devtoolsJson from "vite-plugin-devtools-json";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 export default defineConfig(({ mode }) => {
@@ -27,10 +26,7 @@ export default defineConfig(({ mode }) => {
         }
     };
 
-    plugins.push(isDev
-        ? devtoolsJson()
-        : ViteImageOptimizer({ logStats: true })
-    );
+    if (!isDev) plugins.push(ViteImageOptimizer({ logStats: true }));
 
     return {
         build: {
