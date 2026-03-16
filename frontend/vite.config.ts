@@ -29,10 +29,6 @@ export default defineConfig(({ mode }) => {
     if (!isDev) plugins.push(ViteImageOptimizer({ logStats: true }));
 
     return {
-        build: {
-            cssMinify: "lightningcss"
-        },
-
         server: serverOptions,
         preview: serverOptions,
 
