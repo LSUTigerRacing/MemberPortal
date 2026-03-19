@@ -117,28 +117,4 @@ public class AuthController : ControllerBase
         Response.Cookies.Delete("access_token");
         return Ok(new { message = "Successfully logged out." });
     }
-
-// AI-Given test url- delete later
-    [HttpGet("test-auth")]
-    public IActionResult TestAuth()
-    {
-        // A simple endpoint to visually verify the cookie is working 
-        // without needing the Svelte frontend running.
-        if (Request.Cookies.TryGetValue("access_token", out var token))
-        {
-            return Ok(new 
-            { 
-                status = "Authenticated ✅", 
-                message = "The HttpOnly cookie was successfully set and attached to this request!",
-                // Print just the start of the token to prove it's there without exposing the whole thing
-                tokenPrefix = token.Substring(0, 15) + "..." 
-            });
-        }
-
-        return Unauthorized(new 
-        { 
-            status = "Unauthenticated ❌", 
-            message = "No access_token cookie found. You are not logged in." 
-        });
-    }
 }
