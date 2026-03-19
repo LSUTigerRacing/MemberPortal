@@ -16,15 +16,9 @@
                 <div class="flex flex-col justify-around items-center mt-30">
                     <div class="flex flex-col gap-6">
                         <img src={Logo} alt="TigerRacing logo" />
-<<<<<<< HEAD
-                        <a class="{buttonVariants({ variant: "ghost" })} bg-background text-muted-foreground font-black! text-2xl! p-8! hover:bg-primary hover:text-background active:bg-foreground active:scale-95" href={resolve("/api/auth/google", {})}>
-                            <img src={Microsoft} alt="Microsoft logo" />
-                            Sign in with Microsoft
-=======
-                        <a class="{buttonVariants({ variant: "ghost" })} bg-background text-muted-foreground font-black! text-2xl! p-8! hover:bg-primary hover:text-background active:bg-foreground motion-safe:active:scale-95" href={resolve("/api/auth/microsoft", {})}>
+                        <a class="{buttonVariants({ variant: "ghost" })} bg-background text-muted-foreground font-black! text-2xl! p-8! hover:bg-primary hover:text-background active:bg-foreground motion-safe:active:scale-95" href={resolve("/api/auth/google", {})}>
                             <img src={Google} alt="Google logo" />
                             Sign in with Google
->>>>>>> origin/main
                         </a>
                         <span class="text-sm text-muted text-center">
                             Don't have an account?
