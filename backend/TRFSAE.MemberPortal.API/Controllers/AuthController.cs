@@ -6,11 +6,11 @@ using TRFSAE.MemberPortal.API.Models;
 namespace TRFSAE.MemberPortal.API.Controllers;
 
 [ApiController]
-[Route("api/auth")] // Simplified route
+[Route("api/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly Client _supabaseClient; // Inject the Supabase client here
+    private readonly Client _supabaseClient;
 
     public AuthController(IAuthService authService, Client supabaseClient)
     {
