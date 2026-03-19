@@ -46,7 +46,7 @@ public class AuthService: IAuthService
             var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
             if (userIdClaim == null) return null;
 
-            var userDto = await _userService.GetUserByIDAsync(Guid.Parse(userIdClaim));
+            var userDto = await _userService.GetUserAsync(Guid.Parse(userIdClaim));
             if (userDto == null) return null;
 
             return new UserModel

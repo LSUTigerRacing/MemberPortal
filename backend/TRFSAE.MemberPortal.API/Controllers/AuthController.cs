@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     [HttpGet("google")]
     public async Task<IActionResult> GoogleLogin()
     {
-        var callbackUrl = "http://localhost:5096/api/auth/callback";
+        var callbackUrl = "http://127.0.0.1:5096/api/auth/callback"; //change to actual auth frontend url when deployed
         var verifierBytes = new byte[32];
         System.Security.Cryptography.RandomNumberGenerator.Fill(verifierBytes);
         var pkceVerifier = Microsoft.AspNetCore.WebUtilities.WebEncoders.Base64UrlEncode(verifierBytes);
@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
 
             await _authService.SyncUserToDatabase(session.AccessToken);
 
-            return Redirect("http://localhost:3000");        
+            return Redirect("http://127.0.0.1:3000/");        
         }
         catch (Exception ex)
         {
