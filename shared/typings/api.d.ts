@@ -1,6 +1,7 @@
 import type {
     OrderStatus,
     ProjectPriority,
+    ProjectTaskPriority,
     Role,
     ShirtSize,
     Subsystem,
@@ -37,6 +38,10 @@ export namespace TRAPI {
          * The user's institutional email.
          */
         email: string
+        /**
+         * The user's avatar.
+         */
+        avatar: string
         /**
          * The user's permission level.
          */
@@ -209,29 +214,40 @@ export namespace TRAPI {
         startDate: string
         deadline: string
 
-        tasks: ProjectTask[]
+        columns: ProjectColumn[]
         users: ProjectUser[]
 
         createdAt: string
         updatedAt: string
     }
 
+    interface ProjectColumn {
+        id: string
+        title: string
+        color: string
+
+        tasks: ProjectTask[]
+    }
+
     interface ProjectTask {
         id: string
         author: string
-        assignee: string
+        /**
+         * For now, expect `avatar` to be an empty string.
+          */
+        assignees?: Array<Record<"name" | "avatar", string>>
 
         title: string
         description?: string
-        status: boolean
-        deadline: string
+        priority: ProjectTaskPriority
+        completed: boolean
+        deadline?: string
 
         createdAt: string
         updatedAt: string
     }
 
-    // eslint-disable-next-line @stylistic/type-generic-spacing
-    type ProjectUser = Pick<User, "id" | "name" | "email" /* | "avatar" */>;
+    type ProjectUser = Pick<User, "id" | "name" | "email" | "avatar">;
 
     interface DashboardInfo {
         /**

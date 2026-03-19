@@ -3,19 +3,19 @@
     import ListView from "$lib/components/pages/admin/ListView.svelte";
     import SearchBar from "$lib/components/pages/admin/SearchBar.svelte";
 
-    import { ViewMode, SortOrder, type AdminProps } from "$lib/components/pages/admin/types";
+    import { ViewMode, SortOrder, type AdminProps } from "$lib/components/pages/admin/helpers";
 
     let viewMode = $state<ViewMode>(ViewMode.List);
     let sortOrder = $state<SortOrder>(SortOrder.Ascending);
 
-    let filters = $state({
+    let filters = $state<AdminProps["filters"]>({
         systems: [],
         subsystems: [],
         years: [],
         name: ""
-    } as AdminProps["filters"]);
+    });
 
-    let users = $state.raw([] as AdminProps["users"]);
+    let users = $state.raw<AdminProps["users"]>([]);
     let activeUser = $state("");
 
     const nameFilter = $derived(filters.name.toLowerCase());

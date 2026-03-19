@@ -19,58 +19,11 @@ public class UserService : IUserService
         _supabaseClient = supabaseClient;
     }
 
-    public async Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync(
-        int pageNumber,
-        int pageSize,
-        string? search,
-        bool? hazingStatus,
-        bool? feeStatus,
-        int? gradYear,
-        ShirtSize? shirtSize,
-        Subsystem? subsystem
-    )
+    public async Task<IEnumerable<UserSummaryDto>> GetAllUsersAsync()
     {
-        var query = _supabaseClient.From<UserModel>();
-
-        if (!string.IsNullOrEmpty(search))
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.Name == search);
-        }
-
-        if (hazingStatus != null)
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.HazingStatus == hazingStatus);
-        }
-
-        if (feeStatus != null)
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.FeeStatus == feeStatus);
-        }
-
-        if (gradYear != null)
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.GradYear == gradYear);
-        }
-
-        if (shirtSize != null)
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.ShirtSize == shirtSize);
-        }
-
-        if (subsystem != null)
-        {
-            query = (Supabase.Interfaces.ISupabaseTable<UserModel, Supabase.Realtime.RealtimeChannel>)
-            query.Where(u => u.Subsystem == subsystem);
-        }
-
-        var response = await query
+        var response = await _supabaseClient
+            .From<UserModel>()
             .Order(u => u.CreatedAt, Supabase.Postgrest.Constants.Ordering.Ascending)
-            .Range((pageNumber - 1) * pageSize, pageNumber * pageSize - 1)
             .Select("id,name,email,gradDate,subsystem")
             .Get();
 
@@ -86,7 +39,7 @@ public class UserService : IUserService
         return userSummaries;
     }
 
-    public async Task<UserDetailDto> GetUserByIDAsync(Guid id)
+    public async Task<UserDetailDto> GetUserAsync(Guid id)
     {
         var response = await _supabaseClient
           .From<UserModel>()
@@ -96,7 +49,8 @@ public class UserService : IUserService
 
         if (response == null)
         {
-            throw new Exception("User not found");
+            Console.WriteLine("User not found");
+            return null;
         }
 
         var userDetail = new UserDetailDto
@@ -111,7 +65,7 @@ public class UserService : IUserService
         return userDetail;
     }
 
-    public async Task<CreateUserResponse> CreateUserAsync(CreateUserDto createDto)
+    public async Task<bool> CreateUserAsync(CreateUserDto createDto)
     {
         var userId = Guid.NewGuid();
 
@@ -139,30 +93,28 @@ public class UserService : IUserService
         catch (Exception ex)
         {
             Console.WriteLine($"Error creating user: {ex.Message}");
-            throw;
+            return false;
         }
 
-        return new CreateUserResponse
-        {
-            Location = $"/api/users/{userId}"
-        };
+        return true;
     }
 
 
-    public async Task<UserResponseDto> UpdateUserByIdAsync(Guid userID, UserUpdateDto updateDto)
+    public async Task<bool> UpdateUserAsync(Guid id, UserUpdateDto updateDto)
     {
         try
         {
             var response = await _supabaseClient
                 .From<UserModel>()
-                .Where(u => u.Id == userID)
+                .Where(u => u.Id == id)
                 .Get();
 
             var model = response.Models.FirstOrDefault();
 
             if (model == null)
             {
-                throw new Exception($"User with ID {userID} not found");
+                Console.WriteLine($"User with ID {id} not found");
+                return false;
             }
             if (!string.IsNullOrEmpty(updateDto.Name))
             {
@@ -204,45 +156,27 @@ public class UserService : IUserService
 
             var updateResponse = await _supabaseClient
                 .From<UserModel>()
-                .Where(u => u.Id == userID)
+                .Where(u => u.Id == id)
                 .Update(model);
 
             var updatedUser = updateResponse.Models.FirstOrDefault();
 
-            return new UserResponseDto
-            {
-                UserId = userID,
-                Name = updatedUser.Name,
-                Email = updatedUser.Email,
-                Role = updatedUser.Role,
-                StudentId = updatedUser.StudentId,
-                HazingStatus = updatedUser.HazingStatus,
-                FeeStatus = updatedUser.FeeStatus,
-                GradYear = updatedUser.GradYear,
-                ShirtSize = updatedUser.ShirtSize,
-                Subsystem = updatedUser.Subsystem
-
-            };
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error attempting update: {ex.Message}");
-            throw;
+            return false;
         }
     }
 
-    public async Task<bool> DeleteUserAsync(Guid userId, string confirmationString)
+    public async Task<bool> DeleteUserAsync(Guid id)
     {
-        if (confirmationString != "confirm")
-        {
-            return false;
-        }
-        // Console.WriteLine("Attempting to delete user with ID: " + userId);
         try
         {
             await _supabaseClient
               .From<UserModel>()
-              .Where(x => x.Id == userId)
+              .Where(x => x.Id == id)
               .Delete();
 
             return true;

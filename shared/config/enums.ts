@@ -72,3 +72,10 @@ export enum System {
     Software = "Software",
     Business = "Business"
 }
+
+export enum ProjectTaskPriority {
+    Backlog = "Backlog",
+    Low = "Low",
+    Medium = "Medium",
+    High = "High"
+}

@@ -17,16 +17,16 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetAllOrdersAsync([FromQuery] OrderSearchDto? dto)
+    public async Task<IActionResult> GetAllOrdersAsync()
     {
-        var result = await _orderService.GetAllOrdersAsync(dto);
+        var result = await _orderService.GetAllOrdersAsync();
         return Ok(result);
     }
 
     [HttpGet("fetch")]
-    public async Task<IActionResult> GetOrderByIDAsync([FromQuery] Guid id)
+    public async Task<IActionResult> GetOrderAsync([FromQuery] Guid id)
     {
-        var item = await _orderService.GetOrderByIDAsync(id);
+        var item = await _orderService.GetOrderAsync(id);
         return item is null ? NotFound() : Ok(item);
     }
 
@@ -34,21 +34,20 @@ public class OrderController : ControllerBase
     public async Task<IActionResult> CreateOrderAsync(OrderCreateDto dto)
     {
         var created = await _orderService.CreateOrderAsync(dto);
-        return Created($"/api/purchase-item/{created.Id}", created);
+        return Ok(created);
     }
 
-
-    [HttpPut("update")]
-    public async Task<IActionResult> UpdateOrderByIDAsync([FromQuery] Guid id, OrderUpdateDto dto)
+    [HttpPatch("update")]
+    public async Task<IActionResult> UpdateOrderAsync([FromQuery] Guid id, OrderUpdateDto dto)
     {
-        var updated = await _orderService.UpdateOrderByIDAsync(id, dto);
-        return updated is null ? NotFound() : Ok(updated);
+        var updated = await _orderService.UpdateOrderAsync(id, dto);
+        return Ok(updated);
     }
 
-    [HttpDelete("delete")]
-    public async Task<IActionResult> DeleteOrderAsync([FromQuery] Guid id, string confirmationString)
+    [HttpPost("review")]
+    public async Task<IActionResult> CreateOrderReviewAsync([FromQuery] Guid id, OrderCreateDto dto)
     {
-        var deleted = await _orderService.DeleteOrderAsync(id, confirmationString);
-        return deleted ? NoContent() : NotFound();
+        var created = await _orderService.CreateOrderReviewAsync(dto);
+        return Ok(created);
     }
 }

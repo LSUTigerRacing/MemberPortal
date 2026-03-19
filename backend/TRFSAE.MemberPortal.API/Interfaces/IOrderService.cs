@@ -4,9 +4,9 @@ namespace TRFSAE.MemberPortal.API.Interfaces;
 
 public interface IOrderService
 {
-    Task<List<OrderResponseDto>> GetAllOrdersAsync(OrderSearchDto dto);
-    Task<OrderResponseDto> GetOrderByIDAsync(Guid id);
-    Task<OrderResponseDto> CreateOrderAsync(OrderCreateDto dto);
-    Task<OrderResponseDto> UpdateOrderByIDAsync(Guid id, OrderUpdateDto dto);
-    Task<bool> DeleteOrderAsync(Guid id, string confirmationString);
+    Task<IEnumerable<OrderSummaryDto>> GetAllOrdersAsync();
+    Task<OrderDetailDto> GetOrderAsync(Guid id);
+    Task<bool> CreateOrderAsync(OrderCreateDto dto);
+    Task<bool> UpdateOrderAsync(Guid id, OrderUpdateDto dto);
+    Task<bool> CreateOrderReviewAsync(OrderCreateDto dto);
 }

@@ -3,7 +3,6 @@ import { resolve } from "path";
 
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
-import devtoolsJson from "vite-plugin-devtools-json";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
 
 export default defineConfig(({ mode }) => {
@@ -17,7 +16,7 @@ export default defineConfig(({ mode }) => {
     const serverOptions: ServerOptions = {
         port: 3000,
         strictPort: true,
-        host: "0.0.0.0",
+        host: "127.0.0.1",
         proxy: {
             "/api": {
                 target: "http://127.0.0.1:5096",
@@ -27,16 +26,9 @@ export default defineConfig(({ mode }) => {
         }
     };
 
-    plugins.push(isDev
-        ? devtoolsJson()
-        : ViteImageOptimizer({ logStats: true })
-    );
+    if (!isDev) plugins.push(ViteImageOptimizer({ logStats: true }));
 
     return {
-        build: {
-            cssMinify: "lightningcss"
-        },
-
         server: serverOptions,
         preview: serverOptions,
 

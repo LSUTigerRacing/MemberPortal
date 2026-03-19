@@ -1,39 +1,37 @@
-using Supabase.Postgrest.Attributes;
-using Supabase.Postgrest.Models;
+using System.Text.Json.Serialization;
 using TRFSAE.MemberPortal.API.Enums;
 
-namespace TRFSAE.MemberPortal.API.Models;
+namespace TRFSAE.MemberPortal.API.DTOs;
 
-[Table("project_task")]
-public class ProjectTaskModel : BaseModel
+public class TaskDetailDto
 {
-    [PrimaryKey("id")]
+    [JsonPropertyName("id")]
     public Guid Id { get; set; }
 
-    [Column("projectId")]
+    [JsonPropertyName("projectId")]
     public Guid ProjectId { get; set; }
 
-    [Column("authorId")]
+    [JsonPropertyName("authorId")]
     public Guid AuthorId { get; set; }
 
-    [Column("assigneeId")]
+    [JsonPropertyName("assigneeId")]
     public Guid? AssigneeId { get; set; }
 
-    [Column("title")]
+    [JsonPropertyName("title")]
     public string Title { get; set; } = null!;
 
-    [Column("description")]
+    [JsonPropertyName("description")]
     public string? Description { get; set; }
 
-    [Column("status")]
+    [JsonPropertyName("status")]
     public ProjectStatus Status { get; set; }
 
-    [Column("deadline")]
+    [JsonPropertyName("deadline")]
     public DateTime Deadline { get; set; }
 
-    [Column("createdAt")]
+    [JsonPropertyName("createdAt")]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [Column("updatedAt")]
+    [JsonPropertyName("updatedAt")]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

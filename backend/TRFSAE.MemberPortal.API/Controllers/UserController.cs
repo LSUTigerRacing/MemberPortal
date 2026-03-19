@@ -17,17 +17,9 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetAllUsers(string? search, bool? completedHazingForm, bool? paidMemberFee, int? gradDate, ShirtSize? shirtSize, Subsystem? subsystem, int pageNumber = 1, int pageSize = 8)
+    public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userService.GetAllUsersAsync(
-          pageNumber,
-          pageSize,
-          search,
-          completedHazingForm,
-          paidMemberFee,
-          gradDate,
-          shirtSize,
-          subsystem);
+        var users = await _userService.GetAllUsersAsync();
         return Ok(users);
     }
 
@@ -35,7 +27,7 @@ public class UserController : ControllerBase
     [HttpGet("fetch")]
     public async Task<IActionResult> GetUserByIDAsync([FromQuery] Guid id)
     {
-        var user = await _userService.GetUserByIDAsync(id);
+        var user = await _userService.GetUserAsync(id);
         return Ok(user);
     }
 
@@ -49,14 +41,14 @@ public class UserController : ControllerBase
     [HttpPatch("update")]
     public async Task<IActionResult> UpdateUserByIdAsync([FromQuery] Guid id, UserUpdateDto model)
     {
-        var taskResult = await _userService.UpdateUserByIdAsync(id, model);
+        var taskResult = await _userService.UpdateUserAsync(id, model);
         return Ok(taskResult);
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> DeleteUserAsync([FromQuery] Guid id, string confirmationString)
+    public async Task<IActionResult> DeleteUserAsync([FromQuery] Guid id)
     {
-        var taskResult = await _userService.DeleteUserAsync(id, confirmationString);
+        var taskResult = await _userService.DeleteUserAsync(id);
         return Ok(taskResult);
     }
 }

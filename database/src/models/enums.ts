@@ -4,6 +4,7 @@ import {
     OrderStatus,
     ProjectPriority,
     ProjectStatus,
+    ProjectTaskPriority,
     Role,
     ShirtSize,
     Subsystem,
@@ -18,6 +19,7 @@ export const roles = pgEnum("roles", Role);
 // Projects
 export const projectPriority = pgEnum("project_priority", ProjectPriority);
 export const projectStatus = pgEnum("project_status", ProjectStatus);
+export const projectTaskPriority = pgEnum("project_task_priority", ProjectTaskPriority);
 
 // Orders
 export const orderStatus = pgEnum("order_status", OrderStatus);
