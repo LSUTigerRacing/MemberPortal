@@ -69,7 +69,7 @@ public class AuthController : ControllerBase
             Response.Cookies.Append("access_token", session.AccessToken, new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
+                Secure = Request.IsHttps,
                 SameSite = SameSiteMode.Lax,
                 Expires = DateTimeOffset.UtcNow.AddSeconds(session.ExpiresIn)
             });
