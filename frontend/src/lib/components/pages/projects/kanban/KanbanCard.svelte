@@ -20,9 +20,9 @@
     const { task }: { task: TRAPI.ProjectTask } = $props();
 </script>
 
-<Card class="w-[245px] p-2 relative rounded-sm cursor-pointer bg-accent border-accent shadow-none hover:border-primary">
+<Card class="w-61.25 p-2 relative rounded-sm cursor-pointer bg-accent border-accent shadow-none hover:border-primary">
     <!-- 1.5625rem = 25px -->
-    <CardContent class="flex flex-col p-0 min-h-[1.5625rem]">
+    <CardContent class="flex flex-col p-0 min-h-6.25">
         <DropdownMenu>
             <DropdownMenuTrigger>
                 {#snippet child({ props })}

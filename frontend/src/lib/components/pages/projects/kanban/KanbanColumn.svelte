@@ -10,7 +10,15 @@
         CardHeader,
         CardFooter
     } from "$lib/components/ui/card";
-    import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "$lib/components/ui/dropdown-menu";
+    import {
+        DropdownMenu,
+        DropdownMenuContent,
+        DropdownMenuGroup,
+        DropdownMenuItem,
+        DropdownMenuLabel,
+        DropdownMenuSeparator,
+        DropdownMenuTrigger
+    } from "$lib/components/ui/dropdown-menu";
 
     import KanbanCard from "./KanbanCard.svelte";
 
@@ -32,7 +40,21 @@
                     </Button>
                 {/snippet}
             </DropdownMenuTrigger>
-            <DropdownMenuContent></DropdownMenuContent>
+            <DropdownMenuContent>
+                <DropdownMenuLabel>List Actions</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                    <DropdownMenuItem>Add card</DropdownMenuItem>
+                    <DropdownMenuItem>Copy list</DropdownMenuItem>
+                    <DropdownMenuItem>Move list</DropdownMenuItem>
+                    <DropdownMenuItem>Move all cards in this list</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>Change color</DropdownMenuLabel>
+                    <DropdownMenuItem></DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Archive this list</DropdownMenuItem>
+                    <DropdownMenuItem>Archive all cards in this list</DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
         </DropdownMenu>
     </CardHeader>
     <CardContent class="max-h-[50dvh] px-0.5 overflow-y-auto flex flex-col gap-2">
