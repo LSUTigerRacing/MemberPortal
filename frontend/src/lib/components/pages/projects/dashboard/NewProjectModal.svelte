@@ -86,7 +86,7 @@
     }
 </script>
 
-<DialogContent class="lg:max-w-[800px] xl:max-w-[1000px]">
+<DialogContent class="lg:max-w-200 xl:max-w-250">
     <DialogHeader>
         <DialogTitle>Create New Project</DialogTitle>
         <DialogDescription>Fill in the details to get started.</DialogDescription>
@@ -101,7 +101,7 @@
         <Label for="new-project-name">Project Name</Label>
         <Input class="text-sm" type="text" autocomplete="off" placeholder="Formula SAE Engine Development" required bind:value={data.title} />
         <Label for="new-project-description">Description</Label>
-        <Textarea name="project-description" class="resize-none h-[75px] text-sm lg:h-[150px] lg:max-h-[150px]" placeholder="Describe the project's goals and objectives." />
+        <Textarea name="project-description" class="resize-none h-18.75 text-sm lg:h-37.5 lg:max-h-37.5" placeholder="Describe the project's goals and objectives." />
         <div class="flex flex-col lg:grid grid-cols-6 gap-3">
             <div class="grid col-span-3 gap-3">
                 <Label for="new-project-subsystem">Subsystem</Label>
