@@ -4,9 +4,9 @@ namespace TRFSAE.MemberPortal.API.Interfaces;
 
 public interface IProjectColumnService
 {
-    Task<IEnumerable<ProjectSummaryDto>> GetAllColumnsAsync(Guid projectId);
-    Task<ProjectDetailDto> GetColumnByIdAsync(Guid projectId, Guid id);
-    Task<bool> CreateColumnAsync(CreateProjectDto createDto);
-    Task<bool> UpdateColumnAsync(Guid id, UpdateProjectDto updateDto);
+    Task<IEnumerable<ColumnResponseDto>> GetAllColumnsAsync(Guid projectId);
+    Task<ColumnResponseDto> GetColumnByIdAsync(Guid projectId, Guid id);
+    Task<bool> CreateColumnAsync(Guid projectId, CreateColumnDto createDto);
+    Task<bool> UpdateColumnAsync(Guid id, UpdateColumnDto updateDto);
     Task<bool> DeleteColumnAsync(Guid id);
 }

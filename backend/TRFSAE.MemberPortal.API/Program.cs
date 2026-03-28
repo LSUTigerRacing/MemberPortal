@@ -10,8 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 {
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IRoleService, RoleService>();
-    builder.Services.AddScoped<ITaskService, TaskService>();
     builder.Services.AddScoped<IProjectService, ProjectService>();
+    builder.Services.AddScoped<IProjectColumnService, ProjectColumnService>();
+    builder.Services.AddScoped<ITaskService, TaskService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
     // builder.Services.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
 }
