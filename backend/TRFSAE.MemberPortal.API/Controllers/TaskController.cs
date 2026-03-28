@@ -5,7 +5,7 @@ using TRFSAE.MemberPortal.API.Interfaces;
 namespace TRFSAE.MemberPortal.API.Controllers;
 
 [ApiController]
-[Route("api/projects/tasks")]
+[Route("api/projects/columns/tasks")]
 
 public class TaskController : ControllerBase
 {
