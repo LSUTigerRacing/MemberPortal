@@ -30,14 +30,14 @@ public class ProjectColumnController : ControllerBase
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateColumn(CreateProjectDto createDto)
+    public async Task<IActionResult> CreateColumn([FromQuery] Guid projectId, CreateColumnDto createDto)
     {
-        var project = await _ProjectColumnService.CreateColumnAsync(createDto);
+        var project = await _ProjectColumnService.CreateColumnAsync(projectId, createDto);
         return Ok(project);
     }
 
     [HttpPatch("update")]
-    public async Task<IActionResult> UpdateColumn([FromQuery] Guid id, UpdateProjectDto updateDto)
+    public async Task<IActionResult> UpdateColumn([FromQuery] Guid id, UpdateColumnDto updateDto)
     {
         var project = await _ProjectColumnService.UpdateColumnAsync(id, updateDto);
         return Ok(project);
