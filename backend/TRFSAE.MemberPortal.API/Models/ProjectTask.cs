@@ -13,6 +13,9 @@ public class ProjectTaskModel : BaseModel
     [Column("projectId")]
     public Guid ProjectId { get; set; }
 
+    [Column("columnId")]
+    public Guid ColumnId { get; set; }
+
     [Column("authorId")]
     public Guid AuthorId { get; set; }
 
