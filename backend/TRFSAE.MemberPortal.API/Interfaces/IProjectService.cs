@@ -6,8 +6,8 @@ namespace TRFSAE.MemberPortal.API.Interfaces;
 public interface IProjectService
 {
     Task<IEnumerable<ProjectSummaryDto>> GetAllProjectsAsync();
-    Task<ProjectDetailDto> GetProjectByIdAsync(Guid id);
+    Task<ProjectDetailDto> GetProjectByIdAsync(int id);
     Task<bool> CreateProjectAsync(CreateProjectDto createDto);
-    Task<bool> UpdateProjectAsync(Guid id, UpdateProjectDto updateDto);
-    Task<bool> DeleteProjectAsync(Guid id);
+    Task<bool> UpdateProjectAsync(int id, UpdateProjectDto updateDto);
+    Task<bool> DeleteProjectAsync(int id);
 }

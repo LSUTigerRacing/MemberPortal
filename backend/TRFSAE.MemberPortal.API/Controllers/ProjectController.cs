@@ -23,7 +23,7 @@ public class ProjectController : ControllerBase
     }
 
     [HttpGet("fetch")]
-    public async Task<IActionResult> GetProjectById([FromQuery] Guid id)
+    public async Task<IActionResult> GetProjectById([FromQuery] int id)
     {
         var projects = await _ProjectService.GetProjectByIdAsync(id);
         return Ok(projects);
@@ -37,14 +37,14 @@ public class ProjectController : ControllerBase
     }
 
     [HttpPatch("update")]
-    public async Task<IActionResult> UpdateProject([FromQuery] Guid id, UpdateProjectDto updateDto)
+    public async Task<IActionResult> UpdateProject([FromQuery] int id, UpdateProjectDto updateDto)
     {
         var project = await _ProjectService.UpdateProjectAsync(id, updateDto);
         return Ok(project);
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> DeleteProject([FromQuery] Guid id) // needs to be turned into RPC; return value is true as long as GUID is valid
+    public async Task<IActionResult> DeleteProject([FromQuery] int id) // needs to be turned into RPC; return value is true as long as GUID is valid
     {
         var project = await _ProjectService.DeleteProjectAsync(id);
         return Ok(project);

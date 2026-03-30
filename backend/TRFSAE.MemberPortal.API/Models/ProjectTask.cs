@@ -11,7 +11,7 @@ public class ProjectTaskModel : BaseModel
     public Guid Id { get; set; }
 
     [Column("projectId")]
-    public Guid ProjectId { get; set; }
+    public int ProjectId { get; set; }
 
     [Column("columnId")]
     public Guid ColumnId { get; set; }

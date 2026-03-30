@@ -25,7 +25,7 @@ public class ProjectService : IProjectService
 
         var projectSummaries = response.Models.Select(p => new ProjectSummaryDto
         {
-            Id = p.Id,
+            Id = (int) p.Id,
             Title = p.Title,
             Deadline = p.Deadline,
             Priority = p.Priority
@@ -34,12 +34,12 @@ public class ProjectService : IProjectService
         return projectSummaries;
     }
 
-    public async Task<ProjectDetailDto> GetProjectByIdAsync(Guid projectId)
+    public async Task<ProjectDetailDto> GetProjectByIdAsync(int id)
     {
         var project = await _supabaseClient
             .From<ProjectModel>()
             .Select("*")
-            .Where(p => p.Id == projectId)
+            .Where(p => p.Id == id)
             .Single();
 
         if (project == null)
@@ -49,7 +49,7 @@ public class ProjectService : IProjectService
 
         var projectDetail = new ProjectDetailDto
         {
-            Id = project.Id,
+            Id = (int) project.Id,
             AuthorId = project.AuthorId,
             Title = project.Title,
             Description = project.Description,
@@ -66,12 +66,9 @@ public class ProjectService : IProjectService
 
     public async Task<bool> CreateProjectAsync(CreateProjectDto createDto)
     {
-        var projectId = Guid.NewGuid();
-
-        var newProject = new ProjectModel
+        var newProject = new ProjectModel // dont set id, supabase auto generates since its serial
         {
-            Id = projectId,
-            AuthorId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // temp until JWT is setup
+            AuthorId = new Guid("e7108f04-f770-4021-8f9e-3fc8c968d5c9"), // temp until JWT is setup
             Title = createDto.Title,
             Description = createDto.Description,
             Subsystem = createDto.Subsystem,
@@ -97,7 +94,7 @@ public class ProjectService : IProjectService
         return true;
     }
 
-    public async Task<bool> UpdateProjectAsync(Guid id, UpdateProjectDto updateDto)
+    public async Task<bool> UpdateProjectAsync(int id, UpdateProjectDto updateDto)
     {
         try
         {
@@ -150,7 +147,7 @@ public class ProjectService : IProjectService
         }
     }
 
-    public async Task<bool> DeleteProjectAsync(Guid id) // needs to be turned into RPC; return value is true as long as GUID is valid
+    public async Task<bool> DeleteProjectAsync(int id) // needs to be turned into RPC; return value is true as long as GUID is valid
     {
         try
         {
