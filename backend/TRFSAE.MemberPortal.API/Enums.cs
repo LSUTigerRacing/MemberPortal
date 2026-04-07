@@ -57,7 +57,8 @@ public enum Role
     Admin,
     SystemLead,
     SubsystemLead,
-    Member
+    Member,
+    Unverified
 }
 
 [JsonConverter(typeof(StringEnumConverter))]

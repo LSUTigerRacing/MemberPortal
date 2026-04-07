@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IRoleService, RoleService>();
     builder.Services.AddScoped<ITaskService, TaskService>();
     builder.Services.AddScoped<IProjectService, ProjectService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
     // builder.Services.AddScoped<IGoogleSheetsService, GoogleSheetsService>();
 }
@@ -36,19 +37,32 @@ builder.Services.AddScoped(provider =>
     return client;
 });
 
-// register Supabase client as a singleton for reuse across project
-builder.Services.AddScoped(provider =>
-{
-    var options = new SupabaseOptions
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
     {
-        AutoConnectRealtime = true,
-        AutoRefreshToken = true,
-    };
+        var supabaseUrl = builder.Configuration["SupabaseUrl"];
+        var jwtSecret = builder.Configuration["SupabaseJwtSecret"];
 
-    var url = builder.Configuration["SupabaseUrl"] ?? throw new InvalidOperationException("Supabase URL is not configured.");
-    var key = builder.Configuration["SupabaseKey"] ?? throw new InvalidOperationException("Supabase Key is not configured.");
-    return new Client(url, key, options);
-});
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = $"{supabaseUrl}/auth/v1",
+
+            ValidateAudience = false,
+
+            ValidateLifetime = true,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(jwtSecret!)
+            ),
+
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+
+
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -59,7 +73,7 @@ builder.Services.AddControllers();
 // CORS stuff
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("AllowSvelteApp", policy =>
     {
         policy.WithOrigins("http://localhost:3000")
               .AllowAnyHeader()
@@ -70,7 +84,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowReactApp");
+app.UseCors("AllowSvelteApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -80,6 +94,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 // using (var scope = app.Services.CreateScope())
