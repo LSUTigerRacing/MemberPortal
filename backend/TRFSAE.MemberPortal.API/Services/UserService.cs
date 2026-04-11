@@ -49,7 +49,6 @@ public class UserService : IUserService
 
         if (response == null)
         {
-            Console.WriteLine("User not found");
             return null;
         }
 
@@ -63,6 +62,42 @@ public class UserService : IUserService
         };
 
         return userDetail;
+    }
+
+     public async Task<CurrentUserDto?> GetCurrentUserAsync(Guid id)
+    {
+        var response = await _supabaseClient
+            .From<UserModel>()
+            .Select("id,name,email,system,subsystem,shirtSize,hazingStatus,feeStatus,gradYear,createdAt")
+            .Where(x => x.Id == id)
+            .Get();
+
+        if (response == null)
+        {
+            return null;
+        }
+
+        var user = response.Models.FirstOrDefault();
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        var currentUserDetail = new CurrentUserDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            GradYear = user.GradYear,
+            System = user.System,
+            Subsystem = user.Subsystem,
+            ShirtSize = user.ShirtSize,
+            HazingStatus = user.HazingStatus,
+            FeeStatus = user.FeeStatus
+        };
+
+        return currentUserDetail;
     }
 
     public async Task<bool> CreateUserAsync(CreateUserDto createDto)

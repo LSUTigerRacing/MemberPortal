@@ -145,6 +145,11 @@ export class API extends Axios {
      */
     fetchUser = async (id: TRAPI.User["id"]) => await this.get<TRAPI.User>(`/users/fetch?id=${id}`);
 
+     /**
+     * Fetch the current user's information.
+     */
+    fetchCurrentUser = async () => await this.get<TRAPI.Profile>("/users/current");
+
     /**
      * Update a user.
      * @param id The user ID.
