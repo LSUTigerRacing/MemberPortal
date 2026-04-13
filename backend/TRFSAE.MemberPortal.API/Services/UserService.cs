@@ -49,6 +49,7 @@ public class UserService : IUserService
 
         if (response == null)
         {
+            Console.write("User not found");
             return null;
         }
 
@@ -74,6 +75,7 @@ public class UserService : IUserService
 
         if (response == null)
         {
+            Console.Write("User not found or not signed in."); 
             return null;
         }
 
