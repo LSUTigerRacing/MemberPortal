@@ -161,6 +161,13 @@ export class API extends Axios {
     ) => await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.User>>>(`/users/update?id=${id}`, data);
 
     /**
+     * 
+     * @param avatar 
+     * @returns 
+     */
+    updateAvatar = async (avatar: string) => await this.patch<boolean, AxiosResponse<boolean>, { avatar: string }>(`/users/update-avatar`, { avatar });
+
+    /**
      * Delete a user.
      * @param id The order ID.
      */

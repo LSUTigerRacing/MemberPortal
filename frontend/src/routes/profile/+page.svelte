@@ -24,10 +24,10 @@
   import SidebarButton from "$lib/components/pages/dashboard/SidebarButton.svelte";
   import type { TRAPI } from "../../../../shared/typings/api";
   import { api } from "$lib/modules/API";
-  import type { Unpacked } from "$lib/utils";
-  import type { AdminProps } from "$lib/components/pages/admin/helpers";
 
   let user = $state<TRAPI.Profile | null>(null);
+  let uploading = $state(false);
+  let files = $state<FileList | null>(null);
 
   type ProfileFormState = {
     name: string;
@@ -41,7 +41,7 @@
     feeStatus: boolean;
   };
 
-  let data = $state(<ProfileFormState>{
+  let data = $state<ProfileFormState>({
     name: "Car McCarface",
     email: "cmccarface1@lsu.edu",
     avatar: "",
@@ -52,6 +52,18 @@
     hazingStatus: false,
     feeStatus: false,
     });
+
+  let tempData = $state<ProfileFormState>({ 
+    name: "Car McCarface",
+    email: "cmccarface1@lsu.edu",
+    avatar: "",
+    system: "chassis",
+    subsystem: "battery",
+    gradDate: "2026-05-15",
+    shirtSize: "L",
+    hazingStatus: false,
+    feeStatus: false,
+   });
 
   $effect(() => {
     (async () => {
@@ -70,6 +82,7 @@
       } else {
         alert("Failed to fetch user data");
       }
+      tempData = {...data};
     })();
   });
 
@@ -84,40 +97,70 @@
   async function handleSaveProfile() {
     disabled = true;
     isEditing = false;
-    const gradYear = Number.parseInt(data.gradDate, 10);
+    const gradYear = Number.parseInt(tempData.gradDate, 10);
     if (user?.id) {
       await api.updateUser(user.id, {
-        name: data.name,
-        email: data.email,
-        system: data.system ? (data.system as TRAPI.User["system"]) : undefined,
-        subsystem: data.subsystem
-          ? (data.subsystem as TRAPI.User["subsystem"])
+        name: tempData.name,
+        email: tempData.email,
+        avatar: tempData.avatar,
+        system: tempData.system ? (tempData.system as TRAPI.User["system"]) : undefined,
+        subsystem: tempData.subsystem
+          ? (tempData.subsystem as TRAPI.User["subsystem"])
           : undefined,
         gradYear: Number.isNaN(gradYear) ? undefined : gradYear,
-        shirtSize: data.shirtSize
-          ? (data.shirtSize as TRAPI.User["shirtSize"])
+        shirtSize: tempData.shirtSize
+          ? (tempData.shirtSize as TRAPI.User["shirtSize"])
           : undefined,
-        hazingStatus: data.hazingStatus,
-        feeStatus: data.feeStatus,
+        hazingStatus: tempData.hazingStatus,
+        feeStatus: tempData.feeStatus,
       });
-    } else if (user === null) {
-        data.name = data.name;
-        data.email = data.email;
-        data.system = data.system;
-        data.subsystem = data.subsystem;
-        data.gradDate = data.gradDate;
-        data.shirtSize = data.shirtSize;
-        data.hazingStatus = data.hazingStatus;
-        data.feeStatus = data.feeStatus;
+    } else {
+      data = {...tempData};
     }
   }
 
-  function handleChangeAvatar() {
-    alert("Change Avatar clicked");
+  async function handleCancelEditProfile() {
+    disabled = true;
+    isEditing = false;
+
+    if (user?.id) {
+      tempData.name = user.name;
+      tempData.email = user.email;
+      tempData.avatar = user.avatar ?? "";
+      tempData.system = user.system ?? "";
+      tempData.subsystem = user.subsystem ?? "";
+      tempData.gradDate = user.gradYear?.toString() || "";
+      tempData.shirtSize = user.shirtSize ?? "";
+      tempData.hazingStatus = user.hazingStatus;
+      tempData.feeStatus = user.feeStatus;
+    } else if (user === null) {
+      tempData = {...data};
+    }
+  }
+
+  async function handleChangeAvatar() {
+    try {
+      uploading = true; 
+      const file = files?.[0] ?? null;
+
+      if (!file) {
+        alert("No file selected");
+        return;
+      }
+
+      tempData.avatar = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+        reader.readAsDataURL(file);
+      });
+    } finally {
+      uploading = false;
+    }
   }
 
   function handleChangePassword() {
-    alert("Change Password clicked");
+    
   }
 </script>
 
@@ -166,19 +209,27 @@
       >
         <CardContent class="flex flex-col items-center">
           <Avatar class="mb-4 max-w-xs w-64 h-64">
-            <AvatarImage src={data.avatar} alt="User profile picture" />
+            <AvatarImage src={tempData.avatar} alt="User profile picture" />
             <AvatarFallback class="bg-secondary text-primary text-8xl"
-              >{data.name
+              >{tempData.name
                 .split(" ")
                 .map((x) => x.substring(0, 1))
                 .join("") ?? "CM"}</AvatarFallback
             >
           </Avatar>
-          <span class="mt-4 mb-2 text-3xl">{data.name ?? "Car McCarface"}</span>
-          <button
-            class="mt-4 mb-2 px-4 py-2 rounded-sm bg-accent text-foreground border border-accent"
-            onclick={handleChangeAvatar}>Change Avatar</button
+          <span class="mt-4 mb-2 w-full text-3xl text-center break-words">{tempData.name ?? "Car McCarface"}</span>
+          <input
+            type="file"
+            id="single"
+            accept="image/*"
+            bind:files={files}
+            disabled={uploading}
+            class="hidden"
+            onchange={handleChangeAvatar}
           >
+          <label for="single" class="mt-4 mb-2 px-4 py-2 rounded-sm bg-accent text-foreground border border-accent cursor-pointer">
+            {uploading ? "Uploading..." : "Change Avatar"}
+          </label>
           <button
             class="mt-4 mb-2 px-4 py-2 rounded-sm bg-accent text-foreground border border-accent"
             onclick={handleChangePassword}>Change Password</button
@@ -200,7 +251,7 @@
                   class="mb-4 border border-accent"
                   placeholder="Name"
                   {disabled}
-                  bind:value={data.name}
+                  bind:value={tempData.name}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -209,7 +260,7 @@
                   class="mb-4 border border-accent"
                   placeholder="Email"
                   {disabled}
-                  bind:value={data.email}
+                  bind:value={tempData.email}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -218,7 +269,7 @@
                   class="mb-4 border border-accent"
                   placeholder="System"
                   {disabled}
-                  bind:value={data.system}
+                  bind:value={tempData.system}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -227,7 +278,7 @@
                   class="mb-4 border border-accent"
                   placeholder="Subsystem"
                   {disabled}
-                  bind:value={data.subsystem}
+                  bind:value={tempData.subsystem}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -236,7 +287,7 @@
                   class="mb-4 border border-accent"
                   placeholder="Graduation Date"
                   {disabled}
-                  bind:value={data.gradDate}
+                  bind:value={tempData.gradDate}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -245,7 +296,7 @@
                   class="mb-4 border border-accent"
                   placeholder="T-Shirt Size"
                   {disabled}
-                  bind:value={data.shirtSize}
+                  bind:value={tempData.shirtSize}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -254,7 +305,7 @@
                   class="mb-4 border border-accent"
                   placeholder="Hazing Status"
                   disabled={true}
-                  bind:value={data.hazingStatus}
+                  bind:value={tempData.hazingStatus}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
@@ -263,17 +314,25 @@
                   class="mb-4 border border-accent"
                   placeholder="Fee Status"
                   disabled={true}
-                  bind:value={data.feeStatus}
+                  bind:value={tempData.feeStatus}
                 />
               </div>
             </div>
             <div class="gap-4 flex">
+            {#if isEditing}
+              <button
+                class="mt-4 px-4 py-2 rounded-sm bg-accent text-black border border-accent"
+                onclick={handleCancelEditProfile}
+              >
+                Cancel
+              </button>
+            {/if}
               <button
                 class="mt-4 px-4 py-2 rounded-sm bg-accent text-foreground border border-accent"
                 onclick={isEditing ? handleSaveProfile : handleEditProfile}
               >
                 {isEditing ? "Save" : "Edit"} Profile
-              </button>
+              </button>          
             </div>
           </div>
         </CardContent>

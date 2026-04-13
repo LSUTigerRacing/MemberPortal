@@ -12,6 +12,9 @@ public class UserUpdateDto
     [JsonPropertyName("email")]
     public string? Email { get; set; }
 
+    [JsonPropertyName("avatar")]
+    public string? Avatar { get; set; }
+
     [JsonPropertyName("studentId")]
     public int? StudentId { get; set; }
 

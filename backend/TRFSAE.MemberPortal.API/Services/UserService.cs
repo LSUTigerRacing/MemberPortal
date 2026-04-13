@@ -49,7 +49,7 @@ public class UserService : IUserService
 
         if (response == null)
         {
-            Console.write("User not found");
+            Console.Write("User not found");
             return null;
         }
 
@@ -69,7 +69,7 @@ public class UserService : IUserService
     {
         var response = await _supabaseClient
             .From<UserModel>()
-            .Select("id,name,email,system,subsystem,shirtSize,hazingStatus,feeStatus,gradYear,createdAt")
+            .Select("id,name,avatar,email,system,subsystem,shirtSize,hazingStatus,feeStatus,gradYear,createdAt")
             .Where(x => x.Id == id)
             .Get();
 
@@ -90,6 +90,7 @@ public class UserService : IUserService
         {
             Id = user.Id,
             Name = user.Name,
+            Avatar = user.Avatar,
             Email = user.Email,
             GradYear = user.GradYear,
             System = user.System,
@@ -164,6 +165,10 @@ public class UserService : IUserService
             if (updateDto.Role.HasValue)
             {
                 model.Role = updateDto.Role.Value;
+            }
+            if (!string.IsNullOrEmpty(updateDto.Avatar))
+            {
+                model.Avatar = updateDto.Avatar;
             }
             if (updateDto.StudentId.HasValue)
             {

@@ -13,6 +13,9 @@ public class UserModel : BaseModel
     [Column("name")]
     public string Name { get; set; } = null!;
 
+    [Column("avatar")]
+    public string? Avatar { get; set; }
+
     [Column("email")]
     public string Email { get; set; } = null!;
 

@@ -14,6 +14,9 @@ public class CurrentUserDto
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
 
+    [JsonPropertyName("avatar")]
+    public string? Avatar { get; set; }
+
     [JsonPropertyName("hazingStatus")]
     public bool HazingStatus { get; set; }
 
