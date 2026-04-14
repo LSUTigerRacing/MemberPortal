@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using TRFSAE.MemberPortal.API.DTOs;
 using TRFSAE.MemberPortal.API.Enums;
 using TRFSAE.MemberPortal.API.Interfaces;
-
 namespace TRFSAE.MemberPortal.API.Controllers;
 
 [ApiController]
@@ -30,23 +27,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUserByIDAsync([FromQuery] Guid id)
     {
         var user = await _userService.GetUserAsync(id);
-        return Ok(user);
-    }
-
-    [HttpGet("current")]
-    [Authorize]
-    public async Task<IActionResult> GetCurrentUserAsync()
-    {
-        var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier) ?? User.Claims.FirstOrDefault(c => c.Type == "sub");
-        if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out Guid userId))
-        {
-            return Unauthorized();
-        }
-        var user = await _userService.GetCurrentUserAsync(userId);
-        if (user == null)
-        {
-            return NotFound();
-        }
         return Ok(user);
     }
 

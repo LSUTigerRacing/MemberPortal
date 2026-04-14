@@ -25,9 +25,12 @@
   import type { TRAPI } from "../../../../shared/typings/api";
   import { api } from "$lib/modules/API";
 
-  let user = $state<TRAPI.Profile | null>(null);
+  let user = $state<TRAPI.User | null>(null);
   let uploading = $state(false);
   let files = $state<FileList | null>(null);
+
+  let feeStatus = $state<"Unpaid" | "Paid" | "Waived">("Unpaid");
+  let hazingStatus = $state<"Completed" | "Uncompleted" | "Waived">("Uncompleted");
 
   type ProfileFormState = {
     name: string;
@@ -45,29 +48,30 @@
     name: "Car McCarface",
     email: "cmccarface1@lsu.edu",
     avatar: "",
-    system: "chassis",
-    subsystem: "battery",
-    gradDate: "2026-05-15",
+    system: "Chassis",
+    subsystem: "Battery",
+    gradDate: "2026",
     shirtSize: "L",
     hazingStatus: false,
-    feeStatus: false,
+    feeStatus: true,
     });
 
   let tempData = $state<ProfileFormState>({ 
     name: "Car McCarface",
     email: "cmccarface1@lsu.edu",
     avatar: "",
-    system: "chassis",
-    subsystem: "battery",
-    gradDate: "2026-05-15",
+    system: "Chassis",
+    subsystem: "Battery",
+    gradDate: "2026",
     shirtSize: "L",
     hazingStatus: false,
-    feeStatus: false,
+    feeStatus: true,
    });
 
   $effect(() => {
     (async () => {
-      const res = await api.fetchCurrentUser();
+      // To do: Make this fetch the current user's ID
+      const res = await api.fetchUser();
       user = res.data;
       if (user) {
         data.name = user.name;
@@ -83,6 +87,22 @@
         alert("Failed to fetch user data");
       }
       tempData = {...data};
+
+      if (tempData.hazingStatus === true) {
+        hazingStatus = "Completed";
+      } else if (tempData.hazingStatus === false) {
+        hazingStatus = "Waived";
+      } else {
+        hazingStatus = "Uncompleted";
+      }
+
+      if (tempData.feeStatus === true) {
+        feeStatus = "Paid";
+      } else if (tempData.feeStatus === false) {
+        feeStatus = "Unpaid";
+      } else {
+        feeStatus = "Waived";
+      }
     })();
   });
 
@@ -122,7 +142,6 @@
   async function handleCancelEditProfile() {
     disabled = true;
     isEditing = false;
-
     if (user?.id) {
       tempData.name = user.name;
       tempData.email = user.email;
@@ -160,7 +179,7 @@
   }
 
   function handleChangePassword() {
-    
+    alert("Change password functionality is not implemented yet.");
   }
 </script>
 
@@ -205,7 +224,7 @@
     <div class="flex flex-col lg:flex-row gap-4 h-full">
       <!-- Profile Card -->
       <Card
-        class="bg-gray-80 border-gray text-black rounded-sm lg:max-w-xs px-4 pt-8"
+        class="bg-primary border-gray text-black rounded-sm lg:max-w-xs px-4 pt-8"
       >
         <CardContent class="flex flex-col items-center">
           <Avatar class="mb-4 max-w-xs w-64 h-64">
@@ -217,7 +236,7 @@
                 .join("") ?? "CM"}</AvatarFallback
             >
           </Avatar>
-          <span class="mt-4 mb-2 w-full text-3xl text-center break-words">{tempData.name ?? "Car McCarface"}</span>
+          <span class="mt-4 mb-2 w-full text-3xl text-center break-words text-white">{tempData.name ?? "Car McCarface"}</span>
           <input
             type="file"
             id="single"
@@ -237,7 +256,7 @@
         </CardContent>
       </Card>
       <!--Edit Profile Card-->
-      <Card class="bg-gray-80 border-gray text-black rounded-sm grow">
+      <Card class="bg-primary border-gray text-white rounded-sm grow">
         <CardHeader class="flex flex-col items-center">
           <h2 class="flex items-center">Edit Profile</h2>
           <Separator class="mt-1.75" />
@@ -248,7 +267,7 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">Name</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="Name"
                   {disabled}
                   bind:value={tempData.name}
@@ -257,7 +276,7 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">Email</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="Email"
                   {disabled}
                   bind:value={tempData.email}
@@ -266,7 +285,7 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">System</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="System"
                   {disabled}
                   bind:value={tempData.system}
@@ -275,7 +294,7 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">Subsystem</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="Subsystem"
                   {disabled}
                   bind:value={tempData.subsystem}
@@ -284,7 +303,7 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">Graduation Date</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="Graduation Date"
                   {disabled}
                   bind:value={tempData.gradDate}
@@ -293,28 +312,28 @@
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">T-Shirt Size</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="T-Shirt Size"
                   {disabled}
                   bind:value={tempData.shirtSize}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
-                <h1 class="mb-2">Hazing Status</h1>
+                <h1 class="mb-2">Hazing Modules</h1>
                 <Input
-                  class="mb-4 border border-accent"
-                  placeholder="Hazing Status"
+                  class="mb-4 border border-accent text-black"
+                  placeholder="Hazing Modules"
                   disabled={true}
-                  bind:value={tempData.hazingStatus}
+                  bind:value={hazingStatus}
                 />
               </div>
               <div class="flex flex-col gap-2 w-full">
                 <h1 class="mb-2">Fee Status</h1>
                 <Input
-                  class="mb-4 border border-accent"
+                  class="mb-4 border border-accent text-black"
                   placeholder="Fee Status"
                   disabled={true}
-                  bind:value={tempData.feeStatus}
+                  bind:value={feeStatus}
                 />
               </div>
             </div>

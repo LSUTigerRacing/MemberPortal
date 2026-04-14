@@ -85,19 +85,6 @@ export namespace TRAPI {
         updatedAt: string
     }
 
-    interface Profile {
-        id: string
-        name: string
-        email: string
-        avatar?: string
-        hazingStatus: boolean
-        feeStatus: boolean
-        gradYear: number
-        shirtSize?: ShirtSize | null
-        system?: System | null
-        subsystem?: Subsystem | null
-    }
-
     interface Order {
         /**
          * Internal UUID.

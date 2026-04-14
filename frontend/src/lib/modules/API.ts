@@ -145,11 +145,6 @@ export class API extends Axios {
      */
     fetchUser = async (id: TRAPI.User["id"]) => await this.get<TRAPI.User>(`/users/fetch?id=${id}`);
 
-     /**
-     * Fetch the current user's information.
-     */
-    fetchCurrentUser = async () => await this.get<TRAPI.Profile>("/users/current");
-
     /**
      * Update a user.
      * @param id The user ID.
@@ -159,13 +154,6 @@ export class API extends Axios {
         id: TRAPI.User["id"],
         data: Partial<MutableDocument<TRAPI.User>>
     ) => await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.User>>>(`/users/update?id=${id}`, data);
-
-    /**
-     * 
-     * @param avatar 
-     * @returns 
-     */
-    updateAvatar = async (avatar: string) => await this.patch<boolean, AxiosResponse<boolean>, { avatar: string }>(`/users/update-avatar`, { avatar });
 
     /**
      * Delete a user.
