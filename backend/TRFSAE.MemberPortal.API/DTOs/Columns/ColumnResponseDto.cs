@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Features;
 using TRFSAE.MemberPortal.API.Enums;
 
 namespace TRFSAE.MemberPortal.API.DTOs;
@@ -9,7 +10,7 @@ public class ColumnResponseDto
     public Guid Id { get; set; }
 
     [JsonPropertyName("projectId")]
-    public Guid ProjectId { get; set; }
+    public int ProjectId { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; } = null!;

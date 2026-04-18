@@ -16,22 +16,27 @@ public class ProjectColumnController : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetAllColumns([FromQuery] Guid projectId)
+    public async Task<IActionResult> GetAllColumns([FromQuery] int projectId)
     {
         var projects = await _ProjectColumnService.GetAllColumnsAsync(projectId);
         return Ok(projects);
     }
 
     [HttpGet("fetch")]
-    public async Task<IActionResult> GetColumnById([FromQuery] Guid projectId, [FromQuery] Guid id)
+    public async Task<IActionResult> GetColumnById([FromQuery] int projectId, [FromQuery] Guid id)
     {
         var projects = await _ProjectColumnService.GetColumnByIdAsync(projectId, id);
         return Ok(projects);
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateColumn([FromQuery] Guid projectId, CreateColumnDto createDto)
+    public async Task<IActionResult> CreateColumn([FromQuery] int projectId, CreateColumnDto createDto)
     {
+        if (string.IsNullOrEmpty(createDto.Title))
+        {
+            return BadRequest("Column title is required");
+        }
+
         var project = await _ProjectColumnService.CreateColumnAsync(projectId, createDto);
         return Ok(project);
     }

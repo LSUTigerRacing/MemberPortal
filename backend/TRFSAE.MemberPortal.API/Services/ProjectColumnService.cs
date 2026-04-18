@@ -14,9 +14,7 @@ public class ProjectColumnService : IProjectColumnService
         _supabaseClient = supabaseClient;
     }
 
-    // TODO: Project IDs have been changed to type int instead of GUID. Make sure to update models and DTOs to reflect this.
-
-    public async Task<IEnumerable<ColumnResponseDto>> GetAllColumnsAsync(Guid projectId)
+    public async Task<IEnumerable<ColumnResponseDto>> GetAllColumnsAsync(int projectId)
     {
         var response = await _supabaseClient
             .From<ProjectColumnModel>()
@@ -34,7 +32,7 @@ public class ProjectColumnService : IProjectColumnService
         return columnResponses;
     }
 
-    public async Task<ColumnResponseDto> GetColumnByIdAsync(Guid projectId, Guid id)
+    public async Task<ColumnResponseDto> GetColumnByIdAsync(int projectId, Guid id)
     {
         var response = await _supabaseClient
             .From<ProjectColumnModel>()
@@ -53,7 +51,7 @@ public class ProjectColumnService : IProjectColumnService
         return columnResponses;
     }
 
-    public async Task<bool> CreateColumnAsync(Guid projectId, CreateColumnDto createDto)
+    public async Task<bool> CreateColumnAsync(int projectId, CreateColumnDto createDto)
     {
         var columnId = Guid.NewGuid();
 

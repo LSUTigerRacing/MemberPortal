@@ -12,7 +12,7 @@ public class ProjectColumnModel : BaseModel
     public Guid Id { get; set; }
 
     [Column("projectId")]
-    public Guid ProjectId { get; set; }
+    public int ProjectId { get; set; }
 
     [Column("title")]
     public string Title { get; set; } = "Untitled";
