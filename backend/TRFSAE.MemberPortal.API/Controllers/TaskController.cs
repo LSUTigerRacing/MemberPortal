@@ -16,14 +16,14 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetAllTasks([FromQuery] Guid projectId)
+    public async Task<IActionResult> GetAllTasks([FromQuery] Guid columnId)
     {
-        if (projectId == Guid.Empty)
+        if (columnId == Guid.Empty)
         {
-            return BadRequest("Project ID is required");
+            return BadRequest("Column ID is required");
         }
         
-        var tasks = await _TaskService.GetAllTasksAsync(projectId);
+        var tasks = await _TaskService.GetAllTasksAsync(columnId);
         return Ok(tasks);
     }
 
@@ -40,10 +40,11 @@ public class TaskController : ControllerBase
         return Ok(task);
     }
 
+    // require project ID as well so we save a query to find a column's project ID before creating a task
     [HttpPost("create")]
-    public async Task<IActionResult> CreateTask([FromQuery] Guid projectId, CreateTaskDto createDto)
+    public async Task<IActionResult> CreateTask([FromQuery] int projectId, [FromQuery] Guid columnId, CreateTaskDto createDto)
     {
-        var task = await _TaskService.CreateTaskAsync(projectId, createDto);
+        var task = await _TaskService.CreateTaskAsync(projectId, columnId, createDto);
         return Ok(task);
     }
 

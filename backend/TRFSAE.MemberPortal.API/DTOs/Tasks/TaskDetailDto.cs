@@ -9,13 +9,10 @@ public class TaskDetailDto
     public Guid Id { get; set; }
 
     [JsonPropertyName("projectId")]
-    public Guid ProjectId { get; set; }
+    public int ProjectId { get; set; }
 
     [JsonPropertyName("authorId")]
     public Guid AuthorId { get; set; }
-
-    [JsonPropertyName("assigneeId")]
-    public Guid? AssigneeId { get; set; }
 
     [JsonPropertyName("title")]
     public string Title { get; set; } = null!;
@@ -24,7 +21,7 @@ public class TaskDetailDto
     public string? Description { get; set; }
 
     [JsonPropertyName("status")]
-    public ProjectStatus Status { get; set; }
+    public ProjectPriority Priority { get; set; }
 
     [JsonPropertyName("deadline")]
     public DateTime Deadline { get; set; }

@@ -19,17 +19,14 @@ public class ProjectTaskModel : BaseModel
     [Column("authorId")]
     public Guid AuthorId { get; set; }
 
-    [Column("assigneeId")]
-    public Guid? AssigneeId { get; set; }
-
     [Column("title")]
     public string Title { get; set; } = null!;
 
     [Column("description")]
     public string? Description { get; set; }
 
-    [Column("status")]
-    public ProjectStatus Status { get; set; }
+    [Column("priority")]
+    public ProjectPriority Priority { get; set; }
 
     [Column("deadline")]
     public DateTime Deadline { get; set; }

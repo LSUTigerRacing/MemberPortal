@@ -14,11 +14,11 @@ public class TaskService : ITaskService
         _supabaseClient = supabaseClient;
     }
  
-    public async Task<List<TaskDetailDto>> GetAllTasksAsync(Guid projectId)
+    public async Task<List<TaskDetailDto>> GetAllTasksAsync(Guid columnId)
     {
         var response = await _supabaseClient
         .From<ProjectTaskModel>()
-        .Where(x => x.ProjectId == projectId)
+        .Where(x => x.ColumnId == columnId)
         .Get();
 
         return response.Models.Select(task => new TaskDetailDto
@@ -26,10 +26,9 @@ public class TaskService : ITaskService
             Id = task.Id,
             ProjectId = task.ProjectId,
             AuthorId = task.AuthorId,
-            AssigneeId = task.AssigneeId,
             Title = task.Title,
             Description = task.Description,
-            Status = task.Status,
+            Priority = task.Priority,
             Deadline = task.Deadline,
             CreatedAt = task.CreatedAt,
             UpdatedAt = task.UpdatedAt
@@ -54,10 +53,9 @@ public class TaskService : ITaskService
             Id = response.Id,
             ProjectId = response.ProjectId,
             AuthorId = response.AuthorId,
-            AssigneeId = response.AssigneeId,
             Title = response.Title,
             Description = response.Description,
-            Status = response.Status,
+            Priority = response.Priority,
             Deadline = response.Deadline,
             CreatedAt = response.CreatedAt,
             UpdatedAt = response.UpdatedAt
@@ -66,14 +64,17 @@ public class TaskService : ITaskService
         return taskDetail;
     }
 
-    public async Task<bool> CreateTaskAsync(Guid projectId, CreateTaskDto createDto)
+    public async Task<bool> CreateTaskAsync(int projectId, Guid columnId, CreateTaskDto createDto)
     {
         var newTask = new ProjectTaskModel
         {
             Id = Guid.NewGuid(),
             ProjectId = projectId,
-            AuthorId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // This should be replaced with the actual author ID from the context
+            ColumnId = columnId,
+            AuthorId = new Guid("f1ea4117-d20b-4e9b-a913-b3fa3180b101"), // This should be replaced with the actual author ID from the context
             Title = createDto.Title,
+            Description = createDto.Description,
+            Priority = createDto.Priority,
             Deadline = createDto.Deadline,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -84,7 +85,8 @@ public class TaskService : ITaskService
             var response = await _supabaseClient
             .From<ProjectTaskModel>()
             .Insert(newTask);
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine($"Error creating task: {ex.Message}");
             return false;
