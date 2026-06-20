@@ -1,20 +1,17 @@
-import { pgTable, primaryKey } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import { pgTable, primaryKey } from "drizzle-orm/pg-core";
 
+import { projectPriority, projectStatus, subsystems, projectTaskPriority } from "./enums.js";
 import { User } from "./User.js";
-
-import {
-    projectPriority,
-    projectStatus,
-    subsystems,
-    projectTaskPriority
-} from "./enums.js";
 
 import { ProjectStatus, ProjectTaskPriority } from "@/common/config/enums.js";
 
 export const Project = pgTable("project", t => ({
     id: t.serial().primaryKey(),
-    authorId: t.uuid().notNull().references(() => User.id, { onDelete: "cascade" }),
+    authorId: t
+        .uuid()
+        .notNull()
+        .references(() => User.id, { onDelete: "cascade" }),
 
     title: t.text().notNull().default("Untitled"),
     description: t.text(),
@@ -31,16 +28,28 @@ export const Project = pgTable("project", t => ({
 
 export const ProjectColumn = pgTable("project_column", t => ({
     id: t.uuid().primaryKey().defaultRandom(),
-    projectId: t.serial().notNull().references(() => Project.id, { onDelete: "cascade" }),
+    projectId: t
+        .serial()
+        .notNull()
+        .references(() => Project.id, { onDelete: "cascade" }),
     title: t.text().notNull().default("Untitled"),
     color: t.integer().notNull().default(0)
 }));
 
 export const ProjectTask = pgTable("project_task", t => ({
     id: t.uuid().primaryKey().defaultRandom(),
-    projectId: t.serial().notNull().references(() => Project.id, { onDelete: "cascade" }),
-    columnId: t.uuid().notNull().references(() => ProjectColumn.id, { onDelete: "cascade" }),
-    authorId: t.uuid().notNull().references(() => User.id, { onDelete: "cascade" }),
+    projectId: t
+        .serial()
+        .notNull()
+        .references(() => Project.id, { onDelete: "cascade" }),
+    columnId: t
+        .uuid()
+        .notNull()
+        .references(() => ProjectColumn.id, { onDelete: "cascade" }),
+    authorId: t
+        .uuid()
+        .notNull()
+        .references(() => User.id, { onDelete: "cascade" }),
 
     title: t.text().notNull().default("Untitled"),
     description: t.text(),
@@ -52,16 +61,30 @@ export const ProjectTask = pgTable("project_task", t => ({
     updatedAt: t.timestamp({ withTimezone: true }).notNull().defaultNow()
 }));
 
-export const ProjectUser = pgTable("project_user", t => ({
-    projectId: t.serial().notNull().references(() => Project.id, { onDelete: "cascade" }),
-    userId: t.uuid().notNull().references(() => User.id, { onDelete: "cascade" })
-}), t => [
-    primaryKey({ columns: [t.projectId, t.userId] })
-]);
+export const ProjectUser = pgTable(
+    "project_user",
+    t => ({
+        projectId: t
+            .serial()
+            .notNull()
+            .references(() => Project.id, { onDelete: "cascade" }),
+        userId: t
+            .uuid()
+            .notNull()
+            .references(() => User.id, { onDelete: "cascade" })
+    }),
+    t => [primaryKey({ columns: [t.projectId, t.userId] })]
+);
 
 export const ProjectTaskUser = pgTable("project_task_user", t => ({
-    taskId: t.uuid().notNull().references(() => ProjectTask.id, { onDelete: "cascade" }),
-    userId: t.uuid().notNull().references(() => User.id, { onDelete: "cascade" })
+    taskId: t
+        .uuid()
+        .notNull()
+        .references(() => ProjectTask.id, { onDelete: "cascade" }),
+    userId: t
+        .uuid()
+        .notNull()
+        .references(() => User.id, { onDelete: "cascade" })
 }));
 
 export const ProjectRelations = relations(Project, ({ one, many }) => ({

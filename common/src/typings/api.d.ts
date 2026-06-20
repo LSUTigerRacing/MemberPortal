@@ -6,18 +6,18 @@ import type {
     ShirtSize,
     Subsystem,
     System
-} from "../config/enums.js";
+} from "../config/enums";
 
 interface Pagination {
     /**
      * The number of entries to limit a page to.
      * May or may not be respected by the API.
      */
-    limit?: number
+    limit?: number;
     /**
      * The page number.
      */
-    page: number
+    page: number;
 }
 
 /**
@@ -29,71 +29,71 @@ export namespace TRAPI {
         /**
          * Internal UUID.
          */
-        id: string
+        id: string;
         /**
          * The user's full name.
          */
-        name: string
+        name: string;
         /**
          * The user's institutional email.
          */
-        email: string
+        email: string;
         /**
          * The user's avatar.
          */
-        avatar: string
+        avatar: string;
         /**
          * The user's permission level.
          */
-        role: Role
+        role: Role;
         /**
          * The student's instution-issued ID number (89 #).
          */
-        sid: integer
+        sid: integer;
         /**
          * The system of which the {@link subsystem} belongs to.
          */
-        system: System
+        system: System;
         /**
          * The primary subsystem the user is a part of.
          */
-        subsystem: Subsystem
+        subsystem: Subsystem;
         /**
          * The user's expected graduation date.
          */
-        gradYear: number
+        gradYear: number;
         /**
          * The user's shirt size.
          */
-        shirtSize: ShirtSize
+        shirtSize: ShirtSize;
         /**
          * Whether the user has submitted a hazing prevention
          * proof-of-completion certificate to club administration.
          */
-        hazingStatus: boolean
+        hazingStatus: boolean;
         /**
          * Whether the user has paid their membership fees.
          */
-        feeStatus: boolean
+        feeStatus: boolean;
         /**
          * Timestamp at which the user was created.
          */
-        createdAt: string
+        createdAt: string;
         /**
          * Timestamp at which the user was last updated.
          */
-        updatedAt: string
+        updatedAt: string;
     }
 
     interface Order {
         /**
          * Internal UUID.
          */
-        id: string
+        id: string;
         /**
          * The ID of the order. Follows the format `TR{year}-{serial ID}`.
          */
-        orderId: string
+        orderId: string;
         /**
          * Details regarding the individual who created the order request.
          * Note: This is **not** the person who placed the order itself on a vendor website!
@@ -102,17 +102,17 @@ export namespace TRAPI {
             /**
              * The full name of the user who requested the order.
              */
-            displayName: string
+            displayName: string;
             /**
              * The subsystem the requester belongs to.
              */
-            subsystem: Subsystem
-        }
+            subsystem: Subsystem;
+        };
         /**
          * The current status of the order.
          * Tracks anything from pending review to delivered.
          */
-        status: OrderStatus
+        status: OrderStatus;
         /**
          * The reviews that the order has received.
          * For an order to be approved, it must receive 3 accepted approvals.
@@ -121,130 +121,130 @@ export namespace TRAPI {
          * If any individual denies the order, the requester will need to create
          * a new order and go through the review process once again.
          */
-        reviews: Array<boolean | null>
+        reviews: Array<boolean | null>;
         /**
          * The date by which the order should be placed.
          */
-        deadline: string
+        deadline: string;
         /**
          * The total value of the order.
          */
-        price: number
+        price: number;
         /**
          * The total number of parts in the order.
          */
-        length: number
+        length: number;
         /**
          * A list of parts in the order.
          */
-        items: OrderItem[]
+        items: OrderItem[];
         /**
          * Optional notes added to the order.
          */
-        notes?: string
+        notes?: string;
         /**
          * The order's reviews
          */
-        reviews: OrderReview[]
+        reviews: OrderReview[];
         /**
          * Timestamp at which the order was created.
          */
-        createdAt: string
+        createdAt: string;
         /**
          * Timestamp at which the order was last updated.
          */
-        updatedAt: string
+        updatedAt: string;
     }
 
     interface OrderItem {
         /**
          * Internal UUID.
          */
-        id: string
+        id: string;
         /**
          * The name of the part.
          */
-        name: string
+        name: string;
         /**
          * The manufacturer part number.
          */
-        partNumber: string
+        partNumber: string;
         /**
          * The supplier for the item.
          */
-        supplier: string
+        supplier: string;
         /**
          * The product URL of the item.
          */
-        url: string
+        url: string;
         /**
          * The quantity of the item.
          */
-        quantity: number
+        quantity: number;
         /**
          * The individual price of the item.
          */
-        price: number
+        price: number;
     }
 
     interface OrderReview {
         /**
          * The user reviewing the order.
          */
-        user: string
+        user: string;
         /**
          * Whether the user approved or denied the order.
          */
-        value: boolean
+        value: boolean;
         /**
          * The date at which the review was made.
          */
-        createdAt: string
+        createdAt: string;
     }
 
     interface Project {
-        id: string
-        author: string
-        title: string
-        description?: string
-        subsystem: Subsystem
-        priority: ProjectPriority
-        status: ProjectStatus
+        id: string;
+        author: string;
+        title: string;
+        description?: string;
+        subsystem: Subsystem;
+        priority: ProjectPriority;
+        status: ProjectStatus;
 
-        startDate: string
-        deadline: string
+        startDate: string;
+        deadline: string;
 
-        columns: ProjectColumn[]
-        users: ProjectUser[]
+        columns: ProjectColumn[];
+        users: ProjectUser[];
 
-        createdAt: string
-        updatedAt: string
+        createdAt: string;
+        updatedAt: string;
     }
 
     interface ProjectColumn {
-        id: string
-        title: string
-        color: string
+        id: string;
+        title: string;
+        color: string;
 
-        tasks: ProjectTask[]
+        tasks: ProjectTask[];
     }
 
     interface ProjectTask {
-        id: string
-        author: string
+        id: string;
+        author: string;
         /**
          * For now, expect `avatar` to be an empty string.
-          */
-        assignees?: Array<Record<"name" | "avatar", string>>
+         */
+        assignees?: Array<Record<"name" | "avatar", string>>;
 
-        title: string
-        description?: string
-        priority: ProjectTaskPriority
-        completed: boolean
-        deadline?: string
+        title: string;
+        description?: string;
+        priority: ProjectTaskPriority;
+        completed: boolean;
+        deadline?: string;
 
-        createdAt: string
-        updatedAt: string
+        createdAt: string;
+        updatedAt: string;
     }
 
     type ProjectUser = Pick<User, "id" | "name" | "email" | "avatar">;
@@ -253,25 +253,25 @@ export namespace TRAPI {
         /**
          * The name of the currently logged-in user.
          */
-        name: User["name"]
+        name: User["name"];
         /**
          * The avatar of the currently logged-in user.
          * @todo Ignore this for now. This will be implemented in the future.
          */
-        avatar: User["avatar"]
+        avatar: User["avatar"];
         /**
          * A sample of the user's currently assigned tasks.
          */
-        tasks: Array<Pick<ProjectTask, "name" | "deadline">>
+        tasks: Array<Pick<ProjectTask, "name" | "deadline">>;
         /**
          * Recent announcements.
          * @todo Ignore this for now. This will be implemented in the future.
          */
-        announcements: Array<Record<"content" | "timestamp", string>>
+        announcements: Array<Record<"content" | "timestamp", string>>;
         /**
          * Recent events.
          * @todo Ignore this for now. This will be implemented in the future.
          */
-        events: Array<Record<"title" | "timestamp", string>>
+        events: Array<Record<"title" | "timestamp", string>>;
     }
-};
+}

@@ -63,7 +63,7 @@
 
     onMount(() => {
         const timer = setTimeout(() => animateProgress = true);
-        return () => clearTimeout(timer);
+        return (): void => clearTimeout(timer);
     });
 
 </script>

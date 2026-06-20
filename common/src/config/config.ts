@@ -9,12 +9,7 @@ export const config = {
             Subsystem.Brakes,
             Subsystem.Suspension
         ],
-        [System.Powertrain]: [
-            Subsystem.Battery,
-            Subsystem.Electronics,
-            Subsystem.LowVoltage,
-            Subsystem.TractiveSystem
-        ],
+        [System.Powertrain]: [Subsystem.Battery, Subsystem.Electronics, Subsystem.LowVoltage, Subsystem.TractiveSystem],
         [System.Software]: [
             Subsystem.App,
             /**
@@ -31,10 +26,7 @@ export const config = {
          * DO NOT modify this in an attempt to "sync" the website and Discord
          * without prior authorization. Your PR will be rejected.
          */
-        [System.Business]: [
-            Subsystem.PublicRelations,
-            Subsystem.Finance
-        ]
+        [System.Business]: [Subsystem.PublicRelations, Subsystem.Finance]
     }
 } satisfies Config as Config;
 
@@ -42,5 +34,5 @@ interface Config {
     /**
      * The systems & subsystems in Tiger Racing.
      */
-    systems: Record<System, Subsystem[]>
+    systems: Record<System, Subsystem[]>;
 }

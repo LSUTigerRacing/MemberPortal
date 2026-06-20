@@ -1,28 +1,28 @@
 {
   "name": "portal.formulalsu.org",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "lint": "bun --bun eslint . --fix",
-    "lint:ci": "bun --bun eslint ."
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "@stylistic/eslint-plugin": "^5.10.0",
-    "@types/bun": "^1.3.14",
-    "eslint": "^10.5.0",
-    "eslint-plugin-svelte": "^3.19.0",
-    "globals": "^17.6.0",
-    "typescript": "^7.0.1-rc",
-    "typescript-eslint": "^8.61.1"
-  },
-  "engines": {
-    "bun": ">=1.3.14"
-  },
+  "private": true,
   "workspaces": [
     "client",
     "common",
     "database"
-  ]
+  ],
+  "type": "module",
+  "scripts": {
+    "fmt": "oxfmt",
+    "fmt:ci": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:ci": "oxlint --format=github",
+    "lint:fix": "oxlint --fix"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14",
+    "@types/hjson": "^2.4.6",
+    "oxfmt": "^0.55.0",
+    "oxlint": "^1.70.0",
+    "typescript": "^7.0.1-rc"
+  },
+  "engines": {
+    "bun": ">=1.3.14"
+  }
 }

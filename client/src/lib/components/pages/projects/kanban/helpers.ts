@@ -1,11 +1,11 @@
 import type { TRAPI } from "@/common/typings/api";
 
 export interface ProjectState {
-    title: string
-    tab: ProjectTabs
-    viewMode: ViewMode
-    filter: string
-    columns: TRAPI.ProjectColumn[]
+    title: string;
+    tab: ProjectTabs;
+    viewMode: ViewMode;
+    filter: string;
+    columns: TRAPI.ProjectColumn[];
 }
 
 export enum ProjectTabs {

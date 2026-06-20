@@ -1,5 +1,6 @@
 import { IsMobile } from "$lib/hooks/is-mobile.svelte.js";
 import { getContext, setContext } from "svelte";
+
 import { SIDEBAR_KEYBOARD_SHORTCUT } from "./constants.js";
 
 type Getter<T> = () => T;
@@ -10,14 +11,14 @@ export type SidebarStateProps = {
      * We use a getter function here to support `bind:open` on the `Sidebar.Provider`
      * component.
      */
-    open: Getter<boolean>
+    open: Getter<boolean>;
 
     /**
      * A function that sets the open state of the sidebar. To support `bind:open`, we need
      * a source of truth for changing the open state to ensure it will be synced throughout
      * the sub-components and any `bind:` references.
      */
-    setOpen: (open: boolean) => void
+    setOpen: (open: boolean) => void;
 };
 
 class SidebarState {
@@ -28,7 +29,7 @@ class SidebarState {
     #isMobile: IsMobile;
     state = $derived.by(() => (this.open ? "expanded" : "collapsed"));
 
-    constructor (props: SidebarStateProps) {
+    constructor(props: SidebarStateProps) {
         this.setOpen = props.setOpen;
         this.#isMobile = new IsMobile();
         this.props = props;
@@ -36,7 +37,7 @@ class SidebarState {
 
     // Convenience getter for checking if the sidebar is mobile
     // without this, we would need to use `sidebar.isMobile.current` everywhere
-    get isMobile () {
+    get isMobile() {
         return this.#isMobile.current;
     }
 
@@ -53,9 +54,7 @@ class SidebarState {
     };
 
     toggle = () => {
-        return this.#isMobile.current
-            ? (this.openMobile = !this.openMobile)
-            : this.setOpen(!this.open);
+        return this.#isMobile.current ? (this.openMobile = !this.openMobile) : this.setOpen(!this.open);
     };
 }
 
@@ -67,7 +66,7 @@ const SYMBOL_KEY = "scn-sidebar";
  * @param props The constructor props for the `SidebarState` class.
  * @returns  The `SidebarState` instance.
  */
-export function setSidebar (props: SidebarStateProps): SidebarState {
+export function setSidebar(props: SidebarStateProps): SidebarState {
     return setContext(Symbol.for(SYMBOL_KEY), new SidebarState(props));
 }
 
@@ -76,6 +75,6 @@ export function setSidebar (props: SidebarStateProps): SidebarState {
  * so you cannot destructure it.
  * @returns The `SidebarState` instance.
  */
-export function useSidebar (): SidebarState {
+export function useSidebar(): SidebarState {
     return getContext(Symbol.for(SYMBOL_KEY));
 }

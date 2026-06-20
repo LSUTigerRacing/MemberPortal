@@ -1,26 +1,37 @@
+// oxlint-disable typescript/explicit-function-return-type
 import { Axios, type AxiosResponse } from "axios";
 
-import type { TRAPI } from "@/common/typings/api.js";
+import type { TRAPI } from "@/common/typings/api";
 
-type MutableDocument<T extends Record<"id" | "createdAt" | "updatedAt", string>> = Omit<T, "id" | "createdAt" | "updatedAt">;
+type MutableDocument<T extends Record<"id" | "createdAt" | "updatedAt", string>> = Omit<
+    T,
+    "id" | "createdAt" | "updatedAt"
+>;
 
 // Types that are too long to inline.
-type CreateProjectBody = Pick<TRAPI.Project, "title" | "subsystem" | "status" | "startDate" | "deadline">
-    & Partial<Pick<TRAPI.Project, "description" | "priority">
-    & { author: TRAPI.User["email"], users: Array<TRAPI.User["email"]> }>;
+type CreateProjectBody = Pick<TRAPI.Project, "title" | "subsystem" | "status" | "startDate" | "deadline"> &
+    Partial<
+        Pick<TRAPI.Project, "description" | "priority"> & {
+            author: TRAPI.User["email"];
+            users: Array<TRAPI.User["email"]>;
+        }
+    >;
 
-type CreateProjectTaskBody = Pick<TRAPI.ProjectTask, "title" | "completed">
-    & Partial<Pick<TRAPI.ProjectTask, "description" | "assignees" | "deadline">>;
+type CreateProjectTaskBody = Pick<TRAPI.ProjectTask, "title" | "completed"> &
+    Partial<Pick<TRAPI.ProjectTask, "description" | "assignees" | "deadline">>;
 
 type FetchProjectsResponse = Array<
-    Pick<TRAPI.Project, "id" | "title" | "priority" | "status" | "deadline">
-    & { users: Array<Pick<TRAPI.ProjectUser, "name" | "avatar">>, progress: number }>;
+    Pick<TRAPI.Project, "id" | "title" | "priority" | "status" | "deadline"> & {
+        users: Array<Pick<TRAPI.ProjectUser, "name" | "avatar">>;
+        progress: number;
+    }
+>;
 
 /**
  * Interface to interact with the TigerRacing API.
  */
 export class API extends Axios {
-    constructor () {
+    constructor() {
         super({
             baseURL: "/api",
             withCredentials: true,
@@ -39,7 +50,8 @@ export class API extends Axios {
     /**
      * Fetch all orders.
      */
-    fetchOrders = async () => await this.get<Omit<TRAPI.Order, "items" | "notes" | "createdAt" | "updatedAt">>("/orders/list");
+    fetchOrders = async () =>
+        await this.get<Omit<TRAPI.Order, "items" | "notes" | "createdAt" | "updatedAt">>("/orders/list");
 
     /**
      * Fetch a specific order.
@@ -52,10 +64,11 @@ export class API extends Axios {
      * @param id The order ID.
      * @param data Data to upsert.
      */
-    updateOrder = async (
-        id: TRAPI.Order["id"],
-        data: Partial<MutableDocument<TRAPI.Order>>
-    ) => await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.Order>>>(`/orders/update?id=${id}`, data);
+    updateOrder = async (id: TRAPI.Order["id"], data: Partial<MutableDocument<TRAPI.Order>>) =>
+        await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.Order>>>(
+            `/orders/update?id=${id}`,
+            data
+        );
 
     /**
      * Review an order.
@@ -63,7 +76,8 @@ export class API extends Axios {
      * @param data Whether the order was approved or denied.
      * @todo Check if we need update / deletion of reviews, as we don't delete orders anyway.
      */
-    createOrderReview = async (id: TRAPI.Order["id"], data: TRAPI.OrderReview["value"]) => await this.post<boolean, AxiosResponse<boolean>, TRAPI.OrderReview["value"]>(`/orders/review?id=${id}`, data);
+    createOrderReview = async (id: TRAPI.Order["id"], data: TRAPI.OrderReview["value"]) =>
+        await this.post<boolean, AxiosResponse<boolean>, TRAPI.OrderReview["value"]>(`/orders/review?id=${id}`, data);
 
     /**
      * Fetch all projects.
@@ -80,7 +94,8 @@ export class API extends Axios {
      * Create a project.
      * @param data Project creation data.
      */
-    createProject = async (data: CreateProjectBody) => await this.post<boolean, AxiosResponse<boolean>, CreateProjectBody>("/projects/create", data);
+    createProject = async (data: CreateProjectBody) =>
+        await this.post<boolean, AxiosResponse<boolean>, CreateProjectBody>("/projects/create", data);
 
     /**
      * Update a given project.
@@ -90,11 +105,12 @@ export class API extends Axios {
     updateProject = async (
         id: TRAPI.Project["id"],
         data: Partial<MutableDocument<Omit<TRAPI.Project, "tasks" | "users">>>
-    ) => await this.patch<
-        boolean,
-        AxiosResponse<boolean>,
-        Partial<MutableDocument<Omit<TRAPI.Project, "tasks" | "users">>>
-    >(`/projects/update?id=${id}`, data);
+    ) =>
+        await this.patch<
+            boolean,
+            AxiosResponse<boolean>,
+            Partial<MutableDocument<Omit<TRAPI.Project, "tasks" | "users">>>
+        >(`/projects/update?id=${id}`, data);
 
     /**
      * Delete a project.
@@ -107,7 +123,11 @@ export class API extends Axios {
      * @param data Task creation data.
      * @todo Replace `status` with some category-like instance variable that represents the column the task is currently located in. Also find a better endpoint.
      */
-    createProjectTask = async (id: TRAPI.Project["id"], data: CreateProjectTaskBody) => await this.post<boolean, AxiosResponse<boolean>, CreateProjectTaskBody>(`/projects/tasks/create?id=${id}`, data);
+    createProjectTask = async (id: TRAPI.Project["id"], data: CreateProjectTaskBody) =>
+        await this.post<boolean, AxiosResponse<boolean>, CreateProjectTaskBody>(
+            `/projects/tasks/create?id=${id}`,
+            data
+        );
 
     /**
      * Update a given project task.
@@ -118,18 +138,19 @@ export class API extends Axios {
     updateProjectTask = async (
         id: TRAPI.ProjectTask["id"],
         data: Partial<MutableDocument<Omit<TRAPI.ProjectTask, "author">>>
-    ) => await this.patch<
-        boolean,
-        AxiosResponse<boolean>,
-        Partial<MutableDocument<Omit<TRAPI.ProjectTask, "author">>>
-    >(`/projects/tasks/update?id=${id}`, data);
+    ) =>
+        await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<Omit<TRAPI.ProjectTask, "author">>>>(
+            `/projects/tasks/update?id=${id}`,
+            data
+        );
 
     /**
      * Delete a project task.
      * @param id The task ID.
      * @todo Find a better endpoint.
      */
-    deleteProjectTask = async (id: TRAPI.ProjectTask["id"]) => await this.delete<boolean>(`/projects/tasks/delete?id=${id}`);
+    deleteProjectTask = async (id: TRAPI.ProjectTask["id"]) =>
+        await this.delete<boolean>(`/projects/tasks/delete?id=${id}`);
 
     /**
      * Fetch all users.
@@ -150,10 +171,11 @@ export class API extends Axios {
      * @param id The user ID.
      * @param data Data to upsert.
      */
-    updateUser = async (
-        id: TRAPI.User["id"],
-        data: Partial<MutableDocument<TRAPI.User>>
-    ) => await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.User>>>(`/users/update?id=${id}`, data);
+    updateUser = async (id: TRAPI.User["id"], data: Partial<MutableDocument<TRAPI.User>>) =>
+        await this.patch<boolean, AxiosResponse<boolean>, Partial<MutableDocument<TRAPI.User>>>(
+            `/users/update?id=${id}`,
+            data
+        );
 
     /**
      * Delete a user.

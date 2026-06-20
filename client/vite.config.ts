@@ -1,17 +1,14 @@
-import { defineConfig, type ServerOptions, type UserConfig } from "vite";
-import { resolve } from "path";
-
 import { sveltekit } from "@sveltejs/kit/vite";
 import tailwindcss from "@tailwindcss/vite";
+import { defineConfig, type ServerOptions, type UserConfig } from "vite";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+
+import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
 
-    const plugins: UserConfig["plugins"] = [
-        tailwindcss(),
-        sveltekit()
-    ];
+    const plugins: UserConfig["plugins"] = [tailwindcss(), sveltekit()];
 
     const serverOptions: ServerOptions = {
         port: 3000,

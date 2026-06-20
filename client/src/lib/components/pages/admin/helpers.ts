@@ -1,7 +1,7 @@
 import type { API } from "$lib/modules/API";
-
-import { Subsystem, System } from "@/common/config/enums.js";
 import type { Unpacked } from "$lib/utils";
+
+import { Subsystem, System } from "@/common/config/enums";
 
 export enum ViewMode {
     Gallery,
@@ -17,15 +17,15 @@ export enum SortOrder {
  * All possible props passed to child components of admin page.
  */
 export interface AdminProps {
-    viewMode: ViewMode
-    sortOrder: SortOrder
+    viewMode: ViewMode;
+    sortOrder: SortOrder;
     filters: {
-        systems: System[]
-        subsystems: Subsystem[]
-        years: number[]
-        name: string
-    }
-    users: Awaited<ReturnType<API["fetchUsers"]>>["data"]
-    activeUser: Unpacked<AdminProps["users"]>["id"]
-    filteredCount: number
+        systems: System[];
+        subsystems: Subsystem[];
+        years: number[];
+        name: string;
+    };
+    users: Awaited<ReturnType<API["fetchUsers"]>>["data"];
+    activeUser: Unpacked<AdminProps["users"]>["id"];
+    filteredCount: number;
 }

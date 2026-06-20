@@ -28,15 +28,15 @@ jobs:
       - name: Install Packages
         run: bun ci --filter . --filter ./common --filter ./database
 
+      - name: Typecheck Database
+        run: bun typecheck
+        working-directory: ./database
+
       - name: Generate Migrations
-        run: bun run build
+        run: bun run build && bun db:generate
         working-directory: ./database
 
       - name: Deploy Migrations
         if: github.ref_name == 'main'
         run: bun db:push -- --force
-        working-directory: ./database
-
-      - name: Typecheck Database
-        run: bun typecheck
         working-directory: ./database

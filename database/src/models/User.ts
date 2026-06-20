@@ -1,10 +1,9 @@
-import { pgTable } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-
-import { Order, OrderReview } from "./Order.js";
-import { ProjectTask, ProjectUser } from "./Project.js";
+import { pgTable } from "drizzle-orm/pg-core";
 
 import { roles, shirtSizes, subsystems, systems } from "./enums.js";
+import { Order, OrderReview } from "./Order.js";
+import { ProjectTask, ProjectUser } from "./Project.js";
 
 import { Role } from "@/common/config/enums.js";
 

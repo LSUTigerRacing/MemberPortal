@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "NODE_ENV=\"drizzle\" bun build src/drizzle.config.ts src/models/*.ts --outdir=drizzle --target bun --minify --minify-syntax --minify-whitespace --minify-identifiers",
-    "db:generate": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit generate --config drizzle/src/drizzle.config.js",
-    "db:push": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit push --config drizzle/src/drizzle.config.js",
+    "db:generate": "NODE_ENV=\"drizzle\" bunx --bun drizzle-kit generate --config drizzle/src/drizzle.config.js",
+    "db:push": "NODE_ENV=\"drizzle\" bunx --bun drizzle-kit push --config drizzle/src/drizzle.config.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

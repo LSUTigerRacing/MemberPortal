@@ -33,17 +33,14 @@ import {
  * </table>
  * ```
  */
-export function createSvelteTable<TData extends RowData> (options: TableOptions<TData>) {
+export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>) {
     const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
         {
             state: {},
             // eslint-disable-next-line @typescript-eslint/no-empty-function
-            onStateChange () {},
+            onStateChange() {},
             renderFallbackValue: null,
-            mergeOptions: (
-                defaultOptions: TableOptions<TData>,
-                options: Partial<TableOptions<TData>>
-            ) => {
+            mergeOptions: (defaultOptions: TableOptions<TData>, options: Partial<TableOptions<TData>>) => {
                 return mergeObjects(defaultOptions, options);
             }
         },
@@ -53,7 +50,7 @@ export function createSvelteTable<TData extends RowData> (options: TableOptions<
     const table = createTable(resolvedOptions);
     let state = $state<TableState>(table.initialState);
 
-    function updateOptions () {
+    function updateOptions() {
         table.setOptions(() => {
             return mergeObjects(resolvedOptions, options, {
                 state: mergeObjects(state, options.state || {}),
@@ -89,7 +86,7 @@ type Intersection<T extends readonly unknown[]> = (T extends [infer H, ...infer 
  * Proxy-based to avoid known WebKit recursion issue.
  */
 
-export function mergeObjects<Sources extends readonly MaybeThunk<any>[]> (
+export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(
     ...sources: Sources
 ): Intersection<{ [K in keyof Sources]: Sources[K] }> {
     const resolve = <T extends object>(src: MaybeThunk<T>): T | undefined =>
@@ -104,17 +101,17 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]> (
     };
 
     return new Proxy(Object.create(null), {
-        get (_, key) {
+        get(_, key) {
             const src = findSourceWithKey(key);
 
             return src?.[key as never];
         },
 
-        has (_, key) {
+        has(_, key) {
             return !!findSourceWithKey(key);
         },
 
-        ownKeys (): (string | symbol)[] {
+        ownKeys(): (string | symbol)[] {
             // eslint-disable-next-line svelte/prefer-svelte-reactivity
             const all = new Set<string | symbol>();
             for (const s of sources) {
@@ -128,7 +125,7 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]> (
             return [...all];
         },
 
-        getOwnPropertyDescriptor (_, key) {
+        getOwnPropertyDescriptor(_, key) {
             const src = findSourceWithKey(key);
             if (!src) return undefined;
             return {
