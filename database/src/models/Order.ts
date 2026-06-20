@@ -5,7 +5,7 @@ import { User } from "./User.js";
 
 import { orderStatus, subsystems } from "./enums.js";
 
-import { OrderStatus } from "../../../shared/config/enums.js";
+import { OrderStatus } from "@/common/config/enums.js";
 
 export const Order = pgTable("order", t => ({
     id: t.uuid().primaryKey().defaultRandom(),

@@ -1,23 +1,18 @@
 {
-  "name": "@trmp/database",
+  "name": "@portal.formulalsu.org/database",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun --bun tsc --project tsconfig.drizzle.json",
-    "build:ci": "bun --bun tsc",
-    "db:generate": "bun --bun drizzle-kit generate --config drizzle/database/drizzle.config.js",
-    "db:push": "bun --bun drizzle-kit push --config drizzle/database/drizzle.config.js"
+    "build": "NODE_ENV=\"drizzle\" bun build src/drizzle.config.ts src/models/*.ts --outdir=drizzle --target bun --minify --minify-syntax --minify-whitespace --minify-identifiers",
+    "db:generate": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit generate --config drizzle/src/drizzle.config.js",
+    "db:push": "NODE_ENV=\"drizzle\" bun --bun drizzle-kit push --config drizzle/src/drizzle.config.js",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.13",
-    "@types/pg": "^8.20.0",
-    "dotenv": "^17.4.2",
-    "drizzle-kit": "^0.31.10",
-    "pg": "^8.20.0",
-    "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "@types/bun": "^1.3.14",
+    "drizzle-kit": "^0.31.10"
   }
 }

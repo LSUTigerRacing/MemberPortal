@@ -1,0 +1,29 @@
+name: API
+on:
+  push:
+    branches:
+      - main
+    paths: &paths
+      - "api/**"
+      - "common/**"
+      - "*.json"
+      - ".github/workflows/api.yml"
+  pull_request:
+    paths: *paths
+jobs:
+  api:
+    name: API
+    runs-on: ubuntu-latest
+    concurrency: ci-api-${{ github.ref }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Build API
+        run: dotnet build
+        working-directory: ./api

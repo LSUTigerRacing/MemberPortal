@@ -5,7 +5,7 @@
 # when a pull request is made which modifies any of the specified files.
 
 # Global owners.
-* @liangricky7
+* @liangricky7 @DamienVesper
 
-# Frontend
-/frontend/ @liangricky7 @DamienVesper
+# API.
+/api/ @liangricky7

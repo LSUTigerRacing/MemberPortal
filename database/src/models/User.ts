@@ -6,7 +6,7 @@ import { ProjectTask, ProjectUser } from "./Project.js";
 
 import { roles, shirtSizes, subsystems, systems } from "./enums.js";
 
-import { Role } from "../../../shared/config/enums.js";
+import { Role } from "@/common/config/enums.js";
 
 export const User = pgTable("user", t => ({
     id: t.uuid().primaryKey().defaultRandom(),

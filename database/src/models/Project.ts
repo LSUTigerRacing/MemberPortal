@@ -10,7 +10,7 @@ import {
     projectTaskPriority
 } from "./enums.js";
 
-import { ProjectStatus, ProjectTaskPriority } from "../../../shared/config/enums.js";
+import { ProjectStatus, ProjectTaskPriority } from "@/common/config/enums.js";
 
 export const Project = pgTable("project", t => ({
     id: t.serial().primaryKey(),

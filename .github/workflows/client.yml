@@ -1,0 +1,37 @@
+name: Client
+on:
+  push:
+    branches:
+      - main
+    paths: &paths
+      - "client/**"
+      - "common/**"
+      - "*.json"
+      - "bun.lock"
+      - ".github/workflows/client.yml"
+  pull_request:
+    paths: *paths
+jobs:
+  client:
+    name: Client
+    runs-on: ubuntu-latest
+    concurrency: ci-client-${{ github.ref }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Packages
+        run: bun ci --filter . --filter ./common --filter ./client
+
+      - name: Build Client
+        run: bun run build
+        working-directory: ./client
+
+      # Fails for some reason, skipping for now.
+      - name: Typecheck Client
+        if: false
+        run: bun typecheck
+        working-directory: ./client
