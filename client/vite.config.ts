@@ -15,6 +15,9 @@ export default defineConfig(({ mode }) => {
             alias: {
                 "@/common": "../common/src"
             },
+            files: {
+                assets: "public"
+            },
             preprocess: vitePreprocess()
         })
     ];
