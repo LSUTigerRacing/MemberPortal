@@ -1,11 +1,8 @@
-import { relations } from "drizzle-orm";
 import { pgTable } from "drizzle-orm/pg-core";
 
-import { roles, shirtSizes, subsystems, systems } from "./enums.js";
-import { Order, OrderReview } from "./Order.js";
-import { ProjectTask, ProjectUser } from "./Project.js";
+import { roles, shirtSizes, subsystems, systems } from "./_enums.ts";
 
-import { Role } from "@/common/config/enums.js";
+import { Role } from "@/common/config/enums.ts";
 
 export const User = pgTable("user", t => ({
     id: t.uuid().primaryKey().defaultRandom(),
@@ -27,11 +24,4 @@ export const User = pgTable("user", t => ({
 
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),
     updatedAt: t.timestamp({ withTimezone: true }).notNull().defaultNow()
-}));
-
-export const UserRelations = relations(User, ({ many }) => ({
-    orders: many(Order),
-    orderReviews: many(OrderReview),
-    projects: many(ProjectUser),
-    projectTasks: many(ProjectTask)
 }));

@@ -1,4 +1,4 @@
-import { Subsystem, System } from "./enums.js";
+import { Subsystem, System } from "./enums.ts";
 
 export const config = {
     systems: {

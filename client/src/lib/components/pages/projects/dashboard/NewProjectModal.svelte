@@ -36,12 +36,12 @@
     } from "$lib/components/ui/select";
     import { Textarea } from "$lib/components/ui/textarea";
 
-    import type { NewProjectProps } from "./helpers";
+    import type { NewProjectProps } from "./helpers.ts";
 
     import { api } from "$lib/modules/API";
 
-    import { config } from "@/common/config/config";
-    import { ProjectPriority, ProjectStatus } from "@/common/config/enums";
+    import { config } from "@/common/config/config.ts";
+    import { ProjectPriority, ProjectStatus } from "@/common/config/enums.ts";
 
     let {
         data = $bindable(),

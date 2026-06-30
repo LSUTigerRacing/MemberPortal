@@ -4,10 +4,10 @@
     import { Field, FieldGroup, FieldLabel } from "$lib/components/ui/field";
     import { Separator } from "$lib/components/ui/separator";
 
-    import { SortOrder, type AdminProps } from "./helpers";
+    import { SortOrder, type AdminProps } from "./helpers.ts";
 
-    import { config } from "@/common/config/config";
-    import { System } from "@/common/config/enums";
+    import { config } from "@/common/config/config.ts";
+    import { System } from "@/common/config/enums.ts";
 
     let {
         sortOrder = $bindable(),

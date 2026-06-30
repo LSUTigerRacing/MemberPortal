@@ -9,7 +9,7 @@ import {
     ShirtSize,
     Subsystem,
     System
-} from "@/common/config/enums.js";
+} from "@/common/config/enums.ts";
 
 export const systems = pgEnum("system", System);
 export const subsystems = pgEnum("subsystems", Subsystem);

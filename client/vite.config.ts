@@ -1,14 +1,23 @@
 import { sveltekit } from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
+import adapter from "svelte-adapter-bun-next";
 import { defineConfig, type ServerOptions, type UserConfig } from "vite";
 import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
-
-import { resolve } from "path";
 
 export default defineConfig(({ mode }) => {
     const isDev = mode === "development";
 
-    const plugins: UserConfig["plugins"] = [tailwindcss(), sveltekit()];
+    const plugins: UserConfig["plugins"] = [
+        tailwindcss(),
+        sveltekit({
+            adapter: adapter({ precompress: true }),
+            alias: {
+                "@/common": "../common/src"
+            },
+            preprocess: vitePreprocess()
+        })
+    ];
 
     const serverOptions: ServerOptions = {
         port: 3000,
@@ -35,12 +44,6 @@ export default defineConfig(({ mode }) => {
 
         json: {
             stringify: true
-        },
-
-        resolve: {
-            alias: {
-                $lib: resolve(__dirname, "./src/lib")
-            }
         },
 
         plugins,

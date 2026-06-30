@@ -1,8 +1,8 @@
 import { getLocalTimeZone, today, type CalendarDate } from "@internationalized/date";
 
-import type { TRAPI } from "@/common/typings/api";
+import type { TRAPI } from "@/common/typings/api.ts";
 
-import { ProjectPriority, ProjectStatus, type Subsystem } from "@/common/config/enums";
+import { ProjectPriority, ProjectStatus, type Subsystem } from "@/common/config/enums.ts";
 
 export interface NewProjectProps {
     title: TRAPI.Project["title"];

@@ -10,10 +10,10 @@
         TableRow
     } from "$lib/components/ui/table";
 
-    import { ProjectTabs } from "./helpers";
+    import { ProjectTabs } from "./helpers.ts";
 
-    import type { TRAPI } from "@/common/typings/api";
-    import { ProjectTaskPriority } from "@/common/config/enums";
+    import type { TRAPI } from "@/common/typings/api.ts";
+    import { ProjectTaskPriority } from "@/common/config/enums.ts";
 
     const { tab, tasks }: { tab: ProjectTabs, tasks: TRAPI.ProjectTask[] } = $props();
 

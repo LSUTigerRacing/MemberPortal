@@ -14,7 +14,7 @@
 
     import KanbanCard from "./KanbanCard.svelte";
 
-    import type { TRAPI } from "@/common/typings/api";
+    import type { TRAPI } from "@/common/typings/api.ts";
 
     const { column }: { column: TRAPI.ProjectColumn } = $props();
 </script>

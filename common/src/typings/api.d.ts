@@ -6,7 +6,7 @@ import type {
     ShirtSize,
     Subsystem,
     System
-} from "../config/enums";
+} from "../config/enums.ts";
 
 interface Pagination {
     /**

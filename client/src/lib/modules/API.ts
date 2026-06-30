@@ -1,7 +1,7 @@
 // oxlint-disable typescript/explicit-function-return-type
 import { Axios, type AxiosResponse } from "axios";
 
-import type { TRAPI } from "@/common/typings/api";
+import type { TRAPI } from "@/common/typings/api.ts";
 
 type MutableDocument<T extends Record<"id" | "createdAt" | "updatedAt", string>> = Omit<
     T,

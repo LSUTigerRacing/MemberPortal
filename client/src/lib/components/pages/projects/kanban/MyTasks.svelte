@@ -2,9 +2,9 @@
     import Filter from "./Filter.svelte";
     import TaskTable from "./TaskTable.svelte";
     import ViewButton from "./ViewButton.svelte";
-    import type { ProjectState } from "./helpers";
+    import type { ProjectState } from "./helpers.ts";
 
-    import type { TRAPI } from "@/common/typings/api";
+    import type { TRAPI } from "@/common/typings/api.ts";
 
     let {
         filter = $bindable(),

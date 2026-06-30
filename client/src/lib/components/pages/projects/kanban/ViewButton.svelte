@@ -12,7 +12,7 @@
     } from "$lib/components/ui/popover";
     import { Tabs, TabsList, TabsTrigger } from "$lib/components/ui/tabs";
 
-    import { ViewMode } from "./helpers";
+    import { ViewMode } from "./helpers.ts";
 
     let { viewMode = $bindable() }: { viewMode: ViewMode } = $props();
 </script>

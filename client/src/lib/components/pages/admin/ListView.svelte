@@ -48,7 +48,7 @@
     import type { Unpacked } from "$lib/utils";
 
     import UserDropdown from "./UserDropdown.svelte";
-    import { type AdminProps } from "./helpers";
+    import { type AdminProps } from "./helpers.ts";
 
     let { activeUser = $bindable(), users }: Pick<AdminProps, "activeUser" | "users"> = $props();
 

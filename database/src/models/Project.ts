@@ -1,10 +1,9 @@
-import { relations } from "drizzle-orm";
 import { pgTable, primaryKey } from "drizzle-orm/pg-core";
 
-import { projectPriority, projectStatus, subsystems, projectTaskPriority } from "./enums.js";
-import { User } from "./User.js";
+import { projectPriority, projectStatus, subsystems, projectTaskPriority } from "./_enums.ts";
+import { User } from "./User.ts";
 
-import { ProjectStatus, ProjectTaskPriority } from "@/common/config/enums.js";
+import { ProjectStatus, ProjectTaskPriority } from "@/common/config/enums.ts";
 
 export const Project = pgTable("project", t => ({
     id: t.serial().primaryKey(),
@@ -85,44 +84,4 @@ export const ProjectTaskUser = pgTable("project_task_user", t => ({
         .uuid()
         .notNull()
         .references(() => User.id, { onDelete: "cascade" })
-}));
-
-export const ProjectRelations = relations(Project, ({ one, many }) => ({
-    author: one(User, {
-        fields: [Project.authorId],
-        references: [User.id]
-    }),
-    columns: many(ProjectColumn),
-    tasks: many(ProjectTask),
-    members: many(ProjectUser)
-}));
-
-export const ProjectTaskRelations = relations(ProjectTask, ({ one, many }) => ({
-    column: one(ProjectColumn, {
-        fields: [ProjectTask.columnId],
-        references: [ProjectColumn.id]
-    }),
-    assignees: many(ProjectTaskUser)
-}));
-
-export const ProjectUserRelations = relations(ProjectUser, ({ one }) => ({
-    project: one(Project, {
-        fields: [ProjectUser.projectId],
-        references: [Project.id]
-    }),
-    user: one(User, {
-        fields: [ProjectUser.userId],
-        references: [User.id]
-    })
-}));
-
-export const ProjectTaskUserRelations = relations(ProjectTaskUser, ({ one }) => ({
-    task: one(ProjectTask, {
-        fields: [ProjectTaskUser.taskId],
-        references: [ProjectTask.id]
-    }),
-    user: one(User, {
-        fields: [ProjectTaskUser.userId],
-        references: [User.id]
-    })
 }));

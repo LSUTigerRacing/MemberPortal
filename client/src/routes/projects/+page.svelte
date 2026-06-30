@@ -32,7 +32,7 @@
 
     import { API } from "$lib/modules/API";
 
-    import { ProjectPriority, ProjectStatus } from "@/common/config/enums";
+    import { ProjectPriority, ProjectStatus } from "@/common/config/enums.ts";
 
     const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([]);
 

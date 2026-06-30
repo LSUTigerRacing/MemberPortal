@@ -26,7 +26,7 @@
     import KanbanBoard from "$lib/components/pages/projects/kanban/KanbanBoard.svelte";
     import { type ProjectState, ProjectTabs, ViewMode } from "$lib/components/pages/projects/kanban/helpers";
 
-    import { ProjectTaskPriority } from "@/common/config/enums";
+    import { ProjectTaskPriority } from "@/common/config/enums.ts";
 
     let data = $state<ProjectState>({
         title: "MP - General",

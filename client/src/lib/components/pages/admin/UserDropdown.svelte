@@ -23,7 +23,7 @@
 
     import { api } from "$lib/modules/API";
     import type { Unpacked } from "$lib/utils";
-    import type { AdminProps } from "./helpers";
+    import type { AdminProps } from "./helpers.ts";
 
     const { user }: { user: Unpacked<AdminProps["users"]> } = $props();
     let open = $state(false);

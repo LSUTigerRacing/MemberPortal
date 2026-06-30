@@ -1,10 +1,9 @@
-import { relations } from "drizzle-orm";
 import { pgTable, primaryKey } from "drizzle-orm/pg-core";
 
-import { orderStatus, subsystems } from "./enums.js";
-import { User } from "./User.js";
+import { orderStatus, subsystems } from "./_enums.ts";
+import { User } from "./User.ts";
 
-import { OrderStatus } from "@/common/config/enums.js";
+import { OrderStatus } from "@/common/config/enums.ts";
 
 export const Order = pgTable("order", t => ({
     id: t.uuid().primaryKey().defaultRandom(),
@@ -54,30 +53,3 @@ export const OrderReview = pgTable(
     }),
     t => [primaryKey({ columns: [t.userId, t.orderId] })]
 );
-
-export const OrderRelations = relations(Order, ({ one, many }) => ({
-    requester: one(User, {
-        fields: [Order.requesterId],
-        references: [User.id]
-    }),
-    items: many(OrderItem),
-    reviews: many(OrderReview)
-}));
-
-export const OrderItemRelations = relations(OrderItem, ({ one }) => ({
-    order: one(Order, {
-        fields: [OrderItem.orderId],
-        references: [Order.id]
-    })
-}));
-
-export const OrderReviewRelations = relations(OrderReview, ({ one }) => ({
-    order: one(Order, {
-        fields: [OrderReview.orderId],
-        references: [Order.id]
-    }),
-    user: one(User, {
-        fields: [OrderReview.userId],
-        references: [User.id]
-    })
-}));

@@ -8,7 +8,7 @@
         CommandSeparator
     } from "$lib/components/ui/command";
 
-    import type { ProjectState } from "./helpers";
+    import type { ProjectState } from "./helpers.ts";
 
     let { filter = $bindable() }: { filter: ProjectState["filter"] } = $props();
 </script>

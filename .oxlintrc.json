@@ -21,10 +21,18 @@
       "error",
       "always",
       {
-        "ts": "never",
-        "js": "never",
         "checkTypeImports": true,
-        "ignorePackages": true
+        "ignorePackages": true,
+        "pathGroupOverrides": [
+          {
+            "pattern": "**/*.d",
+            "action": "ignore"
+          },
+          {
+            "pattern": "**/*.svelte",
+            "action": "ignore"
+          }
+        ]
       }
     ],
 

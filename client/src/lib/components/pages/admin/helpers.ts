@@ -1,7 +1,7 @@
 import type { API } from "$lib/modules/API";
 import type { Unpacked } from "$lib/utils";
 
-import { Subsystem, System } from "@/common/config/enums";
+import { Subsystem, System } from "@/common/config/enums.ts";
 
 export enum ViewMode {
     Gallery,

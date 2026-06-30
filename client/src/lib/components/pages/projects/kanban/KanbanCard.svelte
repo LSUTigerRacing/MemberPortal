@@ -15,7 +15,7 @@
         DropdownMenuTrigger
     } from "$lib/components/ui/dropdown-menu";
 
-    import type { TRAPI } from "@/common/typings/api";
+    import type { TRAPI } from "@/common/typings/api.ts";
 
     const { task }: { task: TRAPI.ProjectTask } = $props();
 </script>

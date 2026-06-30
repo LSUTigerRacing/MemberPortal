@@ -1,4 +1,4 @@
-import type { TRAPI } from "@/common/typings/api";
+import type { TRAPI } from "@/common/typings/api.ts";
 
 export interface ProjectState {
     title: string;

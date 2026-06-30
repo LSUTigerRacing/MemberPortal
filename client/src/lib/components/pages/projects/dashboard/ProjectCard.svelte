@@ -17,7 +17,7 @@
     import type { Unpacked } from "$lib/utils";
     import type { API } from "$lib/modules/API";
 
-    import { ProjectPriority, ProjectStatus } from "@/common/config/enums";
+    import { ProjectPriority, ProjectStatus } from "@/common/config/enums.ts";
 
     const {
         project,

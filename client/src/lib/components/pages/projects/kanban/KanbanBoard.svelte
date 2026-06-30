@@ -12,7 +12,7 @@
     import KanbanColumn from "./KanbanColumn.svelte";
     import ViewButton from "./ViewButton.svelte";
 
-    import type { ProjectState } from "./helpers";
+    import type { ProjectState } from "./helpers.ts";
 
     let { filter = $bindable(), viewMode = $bindable(), columns }: Pick<ProjectState, "filter" | "viewMode" | "columns"> = $props();
 </script>
