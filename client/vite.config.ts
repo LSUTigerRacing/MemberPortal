@@ -38,20 +38,14 @@ export default defineConfig(({ mode }) => {
     if (!isDev) plugins.push(ViteImageOptimizer({ logStats: true }));
 
     return {
-        server: serverOptions,
-        preview: serverOptions,
-
         css: {
             devSourcemap: isDev
         },
-
         json: {
             stringify: true
         },
-
         plugins,
-
-        logLevel: isDev ? "info" : "warn",
-        clearScreen: false
+        server: serverOptions,
+        preview: serverOptions
     };
 });
