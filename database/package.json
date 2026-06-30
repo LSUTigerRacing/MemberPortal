@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build src/drizzle.config.ts src/models/*.ts --outdir=drizzle --entry-naming='[name].[ext]' --target bun --minify",
+    "build": "bun build src/drizzle.config.ts src/models/*.ts --outdir=dist --entry-naming='[name].[ext]' --target bun --minify",
     "db:check": "bunx --bun drizzle-kit check",
-    "db:generate": "bunx --bun drizzle-kit generate --config drizzle/drizzle.config.js",
-    "db:push": "bunx --bun drizzle-kit push --config drizzle/drizzle.config.js",
+    "db:generate": "bunx --bun drizzle-kit generate --config dist/drizzle.config.js",
+    "db:push": "bunx --bun drizzle-kit push --config dist/drizzle.config.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
