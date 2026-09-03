@@ -32,6 +32,12 @@ export class API extends Axios {
     }
 
     /**
+     * Fetch the currently logged-in user, including their role/Finance
+     * permissions. Backs client-side UI gating — see $lib/hooks/auth.svelte.ts.
+     */
+    fetchMe = async () => await this.get<Pick<TRAPI.User, "id" | "name" | "email" | "role" | "isFinance">>("/auth/me");
+
+    /**
      * Fetch dashboard data.
      */
     fetchDashboardInfo = async () => await this.get<TRAPI.DashboardInfo>("/dashboard");

@@ -32,7 +32,8 @@
 
     import { API } from "$lib/modules/API";
 
-    import { ProjectPriority, ProjectStatus } from "../../../../shared/config/enums";
+    import { authState } from "$lib/hooks/auth.svelte";
+    import { ProjectPriority, ProjectStatus, Role } from "../../../../shared/config/enums";
 
     const projects = $state.raw<Awaited<ReturnType<API["fetchProjects"]>>["data"]>([]);
 
@@ -92,10 +93,12 @@
                         {/each}
                     </SelectContent>
                 </Select>
-                <DialogTrigger class={buttonVariants()} onclick={() => newProjectData = initialNewProjectData}>
-                    <Plus strokeWidth="3px" />
-                    New Project
-                </DialogTrigger>
+                {#if authState.isAtLeast(Role.SubsystemLead)}
+                    <DialogTrigger class={buttonVariants()} onclick={() => newProjectData = initialNewProjectData}>
+                        <Plus strokeWidth="3px" />
+                        New Project
+                    </DialogTrigger>
+                {/if}
             </div>
         </div>
         <div class:grid={filteredProjects.length > 0} class="grid grid-cols-1 gap-3 mt-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

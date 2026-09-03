@@ -24,7 +24,7 @@ public class UserService : IUserService
         var response = await _supabaseClient
             .From<UserModel>()
             .Order(u => u.CreatedAt, Supabase.Postgrest.Constants.Ordering.Ascending)
-            .Select("id,name,email,gradDate,subsystem")
+            .Select("id,name,email,gradYear,subsystem")
             .Get();
 
         var userSummaries = response.Models.Select(u => new UserSummaryDto
@@ -59,7 +59,9 @@ public class UserService : IUserService
             Name = response.Name,
             Email = response.Email,
             GradYear = response.GradYear,
-            Subsystem = response.Subsystem
+            Subsystem = response.Subsystem,
+            Role = response.Role,
+            IsFinance = response.IsFinance
         };
 
         return userDetail;

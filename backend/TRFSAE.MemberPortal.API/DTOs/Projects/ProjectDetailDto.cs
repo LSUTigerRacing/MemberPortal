@@ -6,7 +6,7 @@ namespace TRFSAE.MemberPortal.API.DTOs;
 public class ProjectDetailDto
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [JsonPropertyName("authorId")]
     public Guid AuthorId { get; set; }

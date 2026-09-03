@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRFSAE.MemberPortal.API.DTOs;
 using TRFSAE.MemberPortal.API.Interfaces;
@@ -6,7 +7,7 @@ namespace TRFSAE.MemberPortal.API.Controllers;
 
 [ApiController]
 [Route("api/projects/tasks")]
-
+[Authorize]
 public class TaskController : ControllerBase
 {
     private readonly ITaskService _TaskService;
@@ -16,18 +17,20 @@ public class TaskController : ControllerBase
     }
 
     [HttpGet("list")]
+    [Authorize(Policy = "MemberAA")]
     public async Task<IActionResult> GetAllTasks([FromQuery] Guid projectId)
     {
         if (projectId == Guid.Empty)
         {
             return BadRequest("Project ID is required");
         }
-        
+
         var tasks = await _TaskService.GetAllTasksAsync(projectId);
         return Ok(tasks);
     }
 
     [HttpGet("fetch")]
+    [Authorize(Policy = "MemberAA")]
     public async Task<IActionResult> GetTaskById([FromQuery] Guid id)
     {
         var task = await _TaskService.GetTasksByIdAsync(id);
@@ -41,6 +44,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPost("create")]
+    [Authorize(Policy = "SubsystemLeadAA")]
     public async Task<IActionResult> CreateTask([FromQuery] Guid projectId, CreateTaskDto createDto)
     {
         var task = await _TaskService.CreateTaskAsync(projectId, createDto);
@@ -48,6 +52,7 @@ public class TaskController : ControllerBase
     }
 
     [HttpPatch("update")]
+    [Authorize(Policy = "SubsystemLeadAA")]
     public async Task<IActionResult> UpdateTask([FromQuery] Guid id, UpdateTaskDto updateDto)
     {
         var task = await _TaskService.UpdateTaskAsync(id, updateDto);
@@ -56,6 +61,7 @@ public class TaskController : ControllerBase
 
 
     [HttpDelete("delete")]
+    [Authorize(Policy = "SubsystemLeadAA")]
     public async Task<IActionResult> DeleteTask([FromQuery] Guid id)
     {
         var task = await _TaskService.DeleteTaskAsync(id);

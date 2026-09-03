@@ -37,6 +37,9 @@
 
     import LogoImg from "$lib/img/logos/logo.webp";
     import { IsMobile } from "$lib/hooks/is-mobile.svelte";
+    import { authState } from "$lib/hooks/auth.svelte";
+
+    import { Role } from "../../../../../shared/config/enums";
 
     interface NavbarItem {
         title: string
@@ -213,10 +216,12 @@
                         <ShoppingCart />
                         Orders
                     </DropdownMenuItem>
-                    <DropdownMenuItem onclick={() => window.open("/admin", "_self")}>
-                        <UserCog />
-                        Admin
-                    </DropdownMenuItem>
+                    {#if authState.isAtLeast(Role.Admin)}
+                        <DropdownMenuItem onclick={() => window.open("/admin", "_self")}>
+                            <UserCog />
+                            Admin
+                        </DropdownMenuItem>
+                    {/if}
                     <DropdownMenuItem onclick={() => window.open("/settings", "_self")}>
                         <Settings />
                         Settings

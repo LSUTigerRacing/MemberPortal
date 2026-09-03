@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Supabase;
 using TRFSAE.MemberPortal.API.Interfaces;
@@ -7,6 +8,7 @@ namespace TRFSAE.MemberPortal.API.Controllers;
 
 [ApiController]
 [Route("api/auth")]
+[Authorize]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -19,6 +21,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("google")]
+    [AllowAnonymous]
     public async Task<IActionResult> GoogleLogin()
     {
         var callbackUrl = "http://127.0.0.1:5096/api/auth/callback"; //change to actual auth frontend url when deployed
@@ -53,6 +56,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("callback")]
+    [AllowAnonymous]
     public async Task<IActionResult> Callback([FromQuery] string code)
     {
         if (string.IsNullOrEmpty(code)) return BadRequest("Missing authorization code.");
@@ -103,6 +107,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("logout")]
+    [AllowAnonymous] // must clear the cookie even if the token inside it is already expired/invalid
     public async Task<IActionResult> Logout()
     {
         try

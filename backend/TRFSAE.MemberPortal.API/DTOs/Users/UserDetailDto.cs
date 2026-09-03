@@ -19,4 +19,10 @@ public class UserDetailDto
 
     [JsonPropertyName("subsystem")]
     public Subsystem? Subsystem { get; set; }
+
+    [JsonPropertyName("role")]
+    public Role Role { get; set; }
+
+    [JsonPropertyName("isFinance")]
+    public bool IsFinance { get; set; }
 }

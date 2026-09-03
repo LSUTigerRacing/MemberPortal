@@ -76,6 +76,11 @@ export namespace TRAPI {
          */
         feeStatus: boolean
         /**
+         * Whether the user is a member of the Finance team, granting full
+         * access to the financial dashboard regardless of {@link role}.
+         */
+        isFinance: boolean
+        /**
          * Timestamp at which the user was created.
          */
         createdAt: string
@@ -203,7 +208,7 @@ export namespace TRAPI {
     }
 
     interface Project {
-        id: string
+        id: number
         author: string
         title: string
         description?: string

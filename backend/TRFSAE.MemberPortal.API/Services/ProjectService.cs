@@ -34,7 +34,7 @@ public class ProjectService : IProjectService
         return projectSummaries;
     }
 
-    public async Task<ProjectDetailDto> GetProjectByIdAsync(Guid projectId)
+    public async Task<ProjectDetailDto> GetProjectByIdAsync(int projectId)
     {
         var project = await _supabaseClient
             .From<ProjectModel>()
@@ -64,14 +64,14 @@ public class ProjectService : IProjectService
         return projectDetail;
     }
 
-    public async Task<bool> CreateProjectAsync(CreateProjectDto createDto)
+    public async Task<bool> CreateProjectAsync(CreateProjectDto createDto, Guid authorId)
     {
-        var projectId = Guid.NewGuid();
-
+        // Id is left unset - the "id" column is a Postgres serial and the
+        // model's [PrimaryKey("id", false)] already excludes it from the
+        // insert payload, so the DB assigns it.
         var newProject = new ProjectModel
         {
-            Id = projectId,
-            AuthorId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // temp until JWT is setup
+            AuthorId = authorId,
             Title = createDto.Title,
             Description = createDto.Description,
             Subsystem = createDto.Subsystem,
@@ -97,7 +97,7 @@ public class ProjectService : IProjectService
         return true;
     }
 
-    public async Task<bool> UpdateProjectAsync(Guid id, UpdateProjectDto updateDto)
+    public async Task<bool> UpdateProjectAsync(int id, UpdateProjectDto updateDto)
     {
         try
         {
@@ -150,7 +150,7 @@ public class ProjectService : IProjectService
         }
     }
 
-    public async Task<bool> DeleteProjectAsync(Guid id) // needs to be turned into RPC; return value is true as long as GUID is valid
+    public async Task<bool> DeleteProjectAsync(int id) // needs to be turned into RPC; return value is true as long as the id is valid
     {
         try
         {

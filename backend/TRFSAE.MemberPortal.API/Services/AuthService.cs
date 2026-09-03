@@ -55,7 +55,9 @@ public class AuthService: IAuthService
                 Name = userDto.Name,
                 Email = userDto.Email,
                 Subsystem = userDto.Subsystem ?? Subsystem.Frame,
-                GradYear = userDto.GradYear
+                GradYear = userDto.GradYear,
+                Role = userDto.Role,
+                IsFinance = userDto.IsFinance
             };
         }
         catch

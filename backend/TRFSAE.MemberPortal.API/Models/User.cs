@@ -37,6 +37,9 @@ public class UserModel : BaseModel
     [Column("feeStatus")]
     public bool FeeStatus { get; set; } = false;
 
+    [Column("isFinance")]
+    public bool IsFinance { get; set; } = false;
+
     [Column("gradYear")]
     public int GradYear { get; set; }
 

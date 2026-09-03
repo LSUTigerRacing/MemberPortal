@@ -25,6 +25,9 @@
     import type { Unpacked } from "$lib/utils";
     import type { AdminProps } from "./helpers";
 
+    import { authState } from "$lib/hooks/auth.svelte";
+    import { Role } from "../../../../../../shared/config/enums";
+
     const { user }: { user: Unpacked<AdminProps["users"]> } = $props();
     let open = $state(false);
 </script>
@@ -43,9 +46,11 @@
             Moderation
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onclick={() => open = true}>
-            Delete
-        </DropdownMenuItem>
+        {#if authState.isAtLeast(Role.Admin)}
+            <DropdownMenuItem onclick={() => open = true}>
+                Delete
+            </DropdownMenuItem>
+        {/if}
     </DropdownMenuContent>
 </DropdownMenu>
 

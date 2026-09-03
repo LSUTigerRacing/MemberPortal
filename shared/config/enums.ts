@@ -30,7 +30,8 @@ export enum Role {
     Admin = "Admin",
     SystemLead = "System Lead",
     SubsystemLead = "Subsystem Lead",
-    Member = "Member"
+    Member = "Member",
+    Unverified = "Unverified"
 }
 
 export enum ShirtSize {

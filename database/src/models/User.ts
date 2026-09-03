@@ -24,6 +24,13 @@ export const User = pgTable("user", t => ({
     shirtSize: shirtSizes(),
     hazingStatus: t.boolean().notNull().default(false),
     feeStatus: t.boolean().notNull().default(false),
+
+    /**
+     * Whether the user is on the Finance team. Grants full access to the
+     * financial dashboard independent of {@link role}.
+     */
+    isFinance: t.boolean().notNull().default(false),
+
     gradYear: t.integer().notNull(),
 
     createdAt: t.timestamp({ withTimezone: true }).notNull().defaultNow(),

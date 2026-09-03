@@ -34,14 +34,10 @@ public class RoleService : IRoleService
          .Where(x => x.Id == id)
          .Single();
 
-        user.Role = role switch
-        {
-            Role.SuperAdmin => Role.SuperAdmin,
-            Role.Admin => Role.Admin,
-            Role.SystemLead => Role.SystemLead,
-            Role.SubsystemLead => Role.SubsystemLead,
-            _ => Role.Member
-        };
+        // The caller (RoleController) already validates the requested role
+        // against the assignment ceiling before this runs, so no fallback
+        // is needed here — assign exactly what was validated.
+        user.Role = role;
 
         await user.Update<UserModel>();
         return true;

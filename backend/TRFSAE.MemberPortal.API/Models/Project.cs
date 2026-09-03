@@ -9,7 +9,7 @@ public class ProjectModel : BaseModel
 {
     [PrimaryKey("id", false)]
     [Column("id")]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
 
     [Column("authorId")]
     public Guid AuthorId { get; set; }

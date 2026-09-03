@@ -66,12 +66,12 @@ public class OrderService : IOrderService
         return orderDetail;
     }
 
-    public async Task<bool> CreateOrderAsync(OrderCreateDto dto)
+    public async Task<bool> CreateOrderAsync(OrderCreateDto dto, Guid requesterId)
     {
         var newOrder = new OrderModel
         {
             Id = Guid.NewGuid(),
-            RequesterId = new Guid("8cff6494-d336-4d38-947e-ff299ae3d204"), // temp until JWT is setup
+            RequesterId = requesterId,
             Name = dto.Name,
             Subsystem = dto.Subsystem,
             Status = dto.Status,
